@@ -1,4 +1,4 @@
-function [dataout]=driverfngen(freqrange,amp,ampoff,wave,channels,readpoints, mic_status, filename, sheet)
+function [dataout]=driverfngen(freqrange,amp,ampoff,wave,channels,readpoints, mic_status, filename, data)
 s=size(freqrange,2);%number of frequencies being run
 s2=size(channels,2);
 %dataout=zeros(s,s2+1);%preallocates dataout
@@ -12,8 +12,7 @@ fngen.Address = 'USB0::0x0957::0x4B07::MY53400461::0::INSTR';%USB address of fng
 for i=1:s
     freq=freqrange(i);%sets current frequency to variable
     disp(['Frequency: ',num2str(freq)])
-    [data] = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints, mic_status, filename, sheet, freqrange);%calls to initialize the function gen
-    dataout(i,:)=data;
+    dataout(i,:) = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints, mic_status, filename, freqrange);%calls to initialize the function gen
     clc;
 end
 
