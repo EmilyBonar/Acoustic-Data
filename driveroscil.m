@@ -1,4 +1,4 @@
-function [dataout]=driveroscil(channels,readpoints,freq, mic_status, filename, f)
+function [dataout]=driveroscil(channels,readpoints,freq)
 %called by InitFnGen to collect data once the signal is being sent
 %Sets parameters for oscilloscope, calls InitOscil to set them, and then
 %calls PullData to gather data from oscilloscope.

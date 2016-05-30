@@ -22,14 +22,12 @@ readpoints=2e6*2;% number of readpoints to take (oscilloscope window: sampling r
 %% Data Writing Parameters
 d = date;
 [s,m1 m2] = mkdir(sprintf('Experimental Data/%s', d)); %create date folder
-filename=sprintf('Experimental Data/%s/1r', d); %must change to file that you want to save to
-sheet=1; %sheet of excel file to write to
-mic_status = 1; %1 if reflection incidence, 2 if reflection transmission
+filename=sprintf('Experimental Data/%s/2r', d); %must change to file that you want to save to
 
 data = cell(length(freqrange),3);
 
 %% Running different tests
-dataout=driverfngen(freqrange,amp, ampoff,wave,channels,readpoints, mic_status, filename, data);
+dataout=driverfngen(freqrange,amp, ampoff,wave,channels,readpoints,data);
 
 %% Save Data
 save(filename, 'dataout')
