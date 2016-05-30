@@ -1,10 +1,8 @@
-function [dataout] = decomp(data, mic_status, filename, sheet, freq, f)
+function [dataout] = decomp(data, mic_status, filename, sheet, freq, pos)
 
 N=length(data);
 P1 = data(1:N/2+1,1)./N;
 P2 = data(1:N/2+1,2)./N;
-
-pos = find(f == freq);
 
 % Hcr = -0.000000000000825368948204012*freq^3 + 0.0000000367600680699613*freq^2 + 0.000030183126278669*freq + 0.514090471563409;
 % Hci = (-0.00000000000608027861484434*freq^3 + 0.00000000271334807728935*freq^2 + 0.000215280179365063*freq + 0.0173487044961814)*i;
