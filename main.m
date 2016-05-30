@@ -5,8 +5,8 @@ clc;
 %% Parameters for Function Generator
 wave='SIN'; %waveform desired
 %%Can set wave to [SINusoid,SQUare,RAMP,NOISe,DC,SINC,EXPRise,EXPFall,CARDiac,GAUSsian,ARBitrary]
-%freqrange=[1800:10:1899,1900:10:2000, 2001:2:2049, 2050:10:2150, 2151:10:2250]; %frequency in Hz
-freqrange=(2000); %frequency in Hz
+freqrange=[1800:20:1900,1910:10:1990, 2000:2:2050, 2060:10:2140, 2150:20:2250]; %frequency in Hz
+%freqrange=(2000); %frequency in Hz
 %freqrange=(1500:25:2500); %frequency in Hz
 amp=.08; %amplitude in V
 ampoff=0; %amplitude offset in V
@@ -21,6 +21,7 @@ readpoints=2e6*2;% number of readpoints to take (oscilloscope window: sampling r
 
 %% Data Writing Parameters
 d = date;
+[s,m1 m2] = mkdir(sprintf('Experimental Data/%s', d)); %create date folder
 filename=sprintf('Experimental Data/%s/1.xlsx', d); %must change to excel file that you want to save to
 sheet=1; %sheet of excel file to write to
 mic_status = 1; %1 if reflection incidence, 2 if reflection transmission
