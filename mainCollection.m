@@ -11,8 +11,8 @@ freqrange=[1800:20:1900,1910:10:1990, 2000:2:2050, 2060:10:2140, 2150:20:2250]; 
 amp=.08; %amplitude in V
 ampoff=0; %amplitude offset in V
 
-sweepstart= 1900; %start of sweep frequency
-sweepend= 2200; % end of sweep frequency
+sweepstart= 1800; %start of sweep frequency
+sweepend= 2250; % end of sweep frequency
 sweeptime=6; %sweeptime in seconds
 
 %% Parameters for Oscilloscope

@@ -6,9 +6,10 @@ clc;
 d = date;
 filename=sprintf('Experimental Data/%s/2r', d); %must change to file that you want to load from
 filename_excel=sprintf('Experimental Data/%s/1.xlsx', d); %must change to file that you want to save to
-sheet = 2;
+sheet = 3;
 
 datain = load(filename);
+datain = datain.dataout;
 
 mic_status = 1;
 
@@ -16,13 +17,13 @@ channels=[1,3];%what channels to take from
 s=size(channels,2);%number of channels being called
 correction=[0.0613,0.0627];%correction factors for mics 1,2
 
-dataout = zeros(length(datain.dataout), 12);
+dataout = zeros(length(datain), 12);
 
-for x = 1:length(datain.dataout)
+for x = 1:length(datain)
     pos = x;
-    freq = datain.dataout{x,1};
-    time = datain.dataout{x,2};
-    volts = datain.dataout{x,3};
+    freq = datain{x,1};
+    time = datain{x,2};
+    volts = datain{x,3};
     
     fs=1/(time(2,1)-time(1,1));
     %calculations for mics
