@@ -4,14 +4,17 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/2r', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/1.xlsx', d); %must change to file that you want to save to
-sheet = 3;
+filename=sprintf('Experimental Data/%s/3', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/2.xlsx', d); %must change to file that you want to save to
+sheet = 1;
+mic_status = 1;
+
+if mic_status == 1
+    excelClear(filename_excel, sheet);
+end
 
 datain = load(filename);
 datain = datain.dataout;
-
-mic_status = 1;
 
 channels=[1,3];%what channels to take from
 s=size(channels,2);%number of channels being called
@@ -24,16 +27,12 @@ for x = 1:length(datain)
     freq = datain{x,1};
     time = datain{x,2};
     volts = datain{x,3};
-    
-    fs=1/(time(2,1)-time(1,1));
-    %calculations for mics
-    for i=1:1:s
-        p=volts(:,i)./correction(i);%multiply by factor
-        HP_P(:,i)=highpass(p,fs);
+
+    for i=1:s
+        p(:,i)=volts(:,i)./correction(i);%turn voltage into pressure
     end
 
-    %n = fs/freq*1000;
-    fourier = fft(HP_P);
+    fourier = fft(p);
 
     %% Analysis and Decomposition of Reflection
     dataout(x,:) = decomp(fourier, mic_status, filename, sheet, freq, pos);
