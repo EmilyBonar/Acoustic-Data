@@ -2,14 +2,13 @@ function [dataout]=driveroscil(channels,readpoints,freq)
 %called by InitFnGen to collect data once the signal is being sent
 %Sets parameters for oscilloscope, calls InitOscil to set them, and then
 %calls PullData to gather data from oscilloscope.
-%Once data is collected, sends data to decomp to be analyzed.
-%Then outputs analyzed data to be written.
+%Once data is collected, sends back to main to be saved to .mat file for later analysis
 oscil.Make = 'agilent';
 oscil.Address = 'USB0::0x2A8D::0x1768::MY55280363::0::INSTR';
 oscil.InputBufferSize = 1E8;
 oscil.ByteOrder = 'littleEndian';
-oscil.ReadPoints = readpoints; % How many points we read out from the oscilloscope
-oscil.ChannelsToRead = channels;
+oscil.ReadPoints = readpoints; % How many points we read out from the oscilloscope, EXCEPT WE KNOW NOT TRUE
+oscil.ChannelsToRead = channels; 
 % oscil.TriggerMode = 'normal';
 % oscil.Triggerlevel = 0.5;
 
