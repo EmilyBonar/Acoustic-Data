@@ -2,10 +2,11 @@ function HcCalc
 %Calculates Hc based on the H12 and H21 data from two runs where the
 %positions have been switched.
 
-filename1 = 'Experimental Data/31-May-2016/1.xlsx';
-filename2 = 'Experimental Data/31-May-2016/1.xlsx';
-sheet1 = 2;
-sheet2 = 3;
+d = date;
+filename1 = sprintf('Experimental Data/%s/4', d);
+filename2 = sprintf('Experimental Data/%s/4', d);
+sheet1 = 1;
+sheet2 = 2;
 
 range = (1500:25:2500);
 l = length(range);

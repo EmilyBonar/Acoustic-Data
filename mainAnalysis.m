@@ -4,14 +4,14 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/5', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/5.xlsx', d); %must change to file that you want to save to
-sheet = 1;
+filename=sprintf('Experimental Data/%s/9', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/4.xlsx', d); %must change to file that you want to save to
+sheet = 3;
 mic_status = 1;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s', d));
 if mic_status == 1
-    excelClear(filename_excel, sheet);
+     excelClear(filename_excel, sheet);
 end
 
 datain = load(filename);
@@ -24,7 +24,6 @@ correction=[0.0627,0.0613];%correction factors for mics 1,2
 dataout = zeros(length(datain), 12); 
 
 fcount = size(datain);
-
 for x = 1:fcount(1)
     pos = x;
     freq = datain{x,1};
