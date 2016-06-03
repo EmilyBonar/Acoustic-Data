@@ -4,9 +4,9 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/9', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/4.xlsx', d); %must change to file that you want to save to
-sheet = 3;
+filename=sprintf('Experimental Data/%s/1', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/1.xlsx', d); %must change to file that you want to save to
+sheet = 4;
 mic_status = 1;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s', d));
@@ -33,7 +33,7 @@ for x = 1:fcount(1)
     for i=1:s
         p(:,i)=volts(:,i)./correction(i);%turn voltage into pressure
     end
-
+    
     fourier = fft(p);
 
     %% Analysis and Decomposition of Reflection

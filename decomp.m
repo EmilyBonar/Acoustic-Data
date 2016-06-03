@@ -4,11 +4,9 @@ N=length(data);
 P1 = data(1:N/2+1,1)./N;
 P2 = data(1:N/2+1,2)./N;
 
-% Hcr = 0.0000000355143891842783*freq^2 + 0.0000356135234022613*freq + 0.469629838624252;
-% Hci = (-0.000000030286287733823*freq^2 + 0.000274368147450973*freq - 0.00608255720457972)*i;
-
-Hcr = 0.000000172902582386439*freq^2 - 0.00102248698459802*freq + 2.34084685881342;
-Hci = (0.0000000259235942729884*freq^2 + 0.0000943425567059583*freq - 0.955628292807634)*i;
+coeff = load('Hc');
+Hcr = polyval(coeff.rline, freq);
+Hci = polyval(coeff.iline, freq)*i;
 
 Hc = Hcr+Hci; %calculated from experimental testing in an empty channel
 
