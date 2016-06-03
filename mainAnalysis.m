@@ -24,7 +24,8 @@ correction=[0.0627,0.0613];%correction factors for mics 1,2
 dataout = zeros(length(datain), 12); 
 
 fcount = size(datain);
-for x = 1:fcount(1)
+% for x = 1:fcount(1)
+for x = 1:1
     pos = x;
     freq = datain{x,1};
     time = datain{x,2};
@@ -36,6 +37,18 @@ for x = 1:fcount(1)
     
     fourier = fft(p);
 
+    %The block below is code for greating a spectrogram
+    fs=1/(time(2)-time(1));
+   window=hamming(512);
+   nfft=1024;
+   noverlap=256;
+   [S, F, T, P] = spectrogram(volts(:,1), window, noverlap, nfft, fs, 'yaxis');
+   surf(T, F, 10*log10(P), 'edgecolor', 'none'); axis tight;view(0,90);
+   colormap(hot);
+   set(gca, 'clim', [-80 -30]);
+   xlabel('time'); ylabel('Frequency');
+   
+   
     %% Analysis and Decomposition of Reflection
     dataout(x,:) = decomp(fourier, mic_status, filename, sheet, freq, pos); 
     %[f S11 S12 S21 S22 PiPiC PrPrC PtPtC R T H12r H12i] 
