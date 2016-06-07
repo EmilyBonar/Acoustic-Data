@@ -1,8 +1,8 @@
 function [dataout] = decomp(data, mic_status, filename, sheet, freq, pos)
 
 N=length(data);
-P1 = data(1:N/2+1,1)./N;
-P2 = data(1:N/2+1,2)./N;
+P1 = data(1:floor(N/2)+1,1)./N;
+P2 = data(1:floor(N/2)+1,2)./N;
 
 coeff = load('Hc');
 Hcr = polyval(coeff.rline, freq);
@@ -28,6 +28,7 @@ if mic_status == 1
     
     H12 = S12/S11;
     H12 = H12/Hc;
+    
     
     HI = exp(-i*k*s); 
     HR = exp(i*k*s);

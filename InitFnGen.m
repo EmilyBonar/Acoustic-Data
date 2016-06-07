@@ -28,12 +28,15 @@ GENOBJ = icdevice('agilent_33120a.mdd', interfaceObj);
 connect(GENOBJ);
 
 % Execute device object function(s).
-devicereset(GENOBJ);
+%devicereset(GENOBJ);
 fclose(interfaceObj);
 delete(interfaceObj);
 GENOBJ = visa(fngen.Make,fngen.Address);
 fopen(GENOBJ);
 
+
+fprintf(GENOBJ,'OUTPUT OFF'); % turn on channel 1 output
+pause(.5)
 %Variable setting
 fprintf(GENOBJ, ['SOURce1:FUNCtion ',num2str(wave)]);%set waveform to desired wave
 fprintf(GENOBJ, ['SOURce1:FREQuency ',num2str(freq)]);%set source frequency
