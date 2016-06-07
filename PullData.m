@@ -86,18 +86,21 @@ else % Acquisition failed for some reason
     throw(Synch_Err)
 end
 
-fprintf(oscilobj,':WAVeform:POINts:MODE RAW')
+fprintf(oscilobj,':WAVeform:POINts:MODE Normal')
+fprintf(oscilobj,':WAVeform:UNSigned 0');
+fprintf(oscilobj,':WAVEFORM:FORMAT WORD');
+fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
 
 %% Preamble
 % Maximum value storable in a INT16
-maxVal = 2^16;
+
 
 disp('Acquiring Preamble')
 pause(.1)
 %  split the preambleBlock into individual pieces of info
 preambleBlock = query(oscilobj,':WAVEFORM:PREAMBLE?');
 preambleBlock = regexp(preambleBlock,',','split');
-
+maxVal = 2^16;
 % store all this information into a waveform structure for later use
 waveform.Format = str2double(preambleBlock{1});     % This should be 1, since we're specifying INT16 output
 waveform.Type = str2double(preambleBlock{2});
@@ -109,10 +112,11 @@ waveform.XReference = str2double(preambleBlock{7});
 waveform.YIncrement = str2double(preambleBlock{8}); % V
 waveform.YOrigin = str2double(preambleBlock{9});
 waveform.YReference = str2double(preambleBlock{10});
-waveform.VoltsPerDiv = (maxVal * waveform.YIncrement / 8);      % V
-waveform.Offset = ((maxVal/2 - waveform.YReference) * waveform.YIncrement + waveform.YOrigin);         % V
-waveform.SecPerDiv = waveform.Points * waveform.XIncrement/10 ; % seconds
+waveform.VoltsPerDiv = (maxVal * waveform.YIncrement / 8);
+waveform.Offset = ((maxVal/2 - waveform.YReference) * waveform.YIncrement + waveform.YOrigin) ;        % V
+waveform.SecPerDiv = waveform.Points * waveform.XIncrement/10;  % seconds
 waveform.Delay = ((waveform.Points/2 - waveform.XReference) * waveform.XIncrement + waveform.XOrigin); % seconds
+
 
 %% Seperate Channel Data
 disp('Separating Data')
@@ -121,7 +125,7 @@ for chanindex = oscil.ChannelsToRead
     disp(inputstring);
     fprintf(oscilobj,inputstring);
     
-    fprintf(oscilobj,':WAVeform:DATA?');%may be causing timeout error. try to read this back
+    fprintf(oscilobj,':WAVeform:DATA?');
     % read back the BINBLOCK with the data in specified format and store it in
     % the waveform structure. FREAD removes the extra terminator in the buffer
     
@@ -134,22 +138,6 @@ for chanindex = oscil.ChannelsToRead
         pause(.1)
     end
     
-    %plot(wave.RawData);
-    %below is hardcode to get rid of random 65280 point jump in data
-    for z= 1:length(wave.RawData)-1
-        if sign(wave.RawData(z)) <= 0 && sign(wave.RawData(z+1)) > 0;
-            wave.RawData(z+1)= wave.RawData(z+1)-65280;
-        end
-        if sign(wave.RawData(z)) >= 0 && sign(wave.RawData(z+1)) < 0;
-            wave.RawData(z+1)= wave.RawData(z+1)+65280;
-        end
-    end
-    a=max(wave.RawData);
-    b=min(wave.RawData);
-    c =((a-b)*.5+b);
-    wave.RawData=wave.RawData-c ;
-    %plot(wave.RawData)    
-    
     % Generate X & Y Data
      wave.XData = (waveform.XIncrement.*(1:length(wave.RawData))) - waveform.XIncrement+waveform.XOrigin;
      wave.YData = (waveform.YIncrement.*(wave.RawData - waveform.YReference)) + waveform.YOrigin;
@@ -159,9 +147,6 @@ for chanindex = oscil.ChannelsToRead
      %samples most likely due to floating point rounding or something of
      %that nature. deemed not critical for data analysis for now.
     
-    % plot(wave.YData)
-    
-     
     dataout.t(n,:) = wave.XData;
     dataout.V(n,:) = wave.YData;
     n = n+1;

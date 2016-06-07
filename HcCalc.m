@@ -3,12 +3,12 @@ function HcCalc
 %positions have been switched.
 
 d = date;
-filename1 = sprintf('Experimental Data/%s/3', d);
-filename2 = sprintf('Experimental Data/%s/4', d);
+filename1 = sprintf('Experimental Data/%s/1', d);
+filename2 = sprintf('Experimental Data/%s/1', d);
 sheet1 = 1;
-sheet2 = 1;
+sheet2 = 2;
 
-range = (1700:20:2300);
+range = (1500:10:2500);
 l = length(range);
 
 H12 = xlsread(filename1, sheet1, sprintf('K2:K%i',l+1)) + i*xlsread(filename1, sheet1, sprintf('L2:L%i',l+1));
