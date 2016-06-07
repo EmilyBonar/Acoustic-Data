@@ -13,7 +13,7 @@ ACQ_TIME_OUT = TimeRange*2.0 + abs(TimePosition)*2.0 + (TIME_TO_TRIGGER)*1.1 + (
 if  ACQ_TIME_OUT < 10.0
     ACQ_TIME_OUT = 10;
 end
-pause(2.2)
+pause(3)
 
 %% Acquire
 fprintf(oscilobj,':WAVeform:UNSigned 0');

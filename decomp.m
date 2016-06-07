@@ -1,8 +1,8 @@
-function [dataout] = decomp(data, mic_status, filename, sheet, freq, pos)
+function [dataout, HI, HR] = decomp(data, mic_status, filename, sheet, freq, pos)
 
 N=length(data);
-P1 = data(1:N/2+1,1)./N;
-P2 = data(1:N/2+1,2)./N;
+P1 = data(1:floor(N/2)+1,1)./N;
+P2 = data(1:floor(N/2)+1,2)./N;
 
 coeff = load('Hc');
 Hcr = polyval(coeff.rline, freq);
@@ -31,9 +31,8 @@ if mic_status == 1
     
     HI = exp(-i*k*s); 
     HR = exp(i*k*s);
-
-    PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/((HR-HI)*(HI-HR));
-    PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*(HI-HR));
+    PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/((HR-HI)*conj((HI-HR)));
+    PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HI-HR)));
     
     R = PrPrC/PiPiC;
     [PtPtC, T] = deal(0);
@@ -41,10 +40,11 @@ if mic_status == 1
     Hr = real(H12); 
     Hi = imag(H12);
     
-    save('Transmission Data', 'S11', 'S12', 'S21','S22')
-    
 elseif mic_status == 2
-    load('Transmission Data')
+    data = load('Transmission Data');
+    H12 = data.H12(pos);
+    HI = data.HI(pos);
+    HR = data.HR(pos);
     
     P_T = P1;
 
@@ -54,9 +54,9 @@ elseif mic_status == 2
     [~, m3] = max(abs(P_T));
     P_T = P_T(m3);
     PtPtC = P_T*conj(P_T);
-    T = PtPtC/(S11+S22-S21*exp(i*k*s)-S12*exp(-i*k*s));
+    T = PtPtC/((1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HI-HR))));
 
-    [PiPiC,PrPrC,R, Hr, Hi] = deal(0);
+    [PiPiC,PrPrC,R, Hr, Hi, S11, S22, S12, S21] = deal(0);
 end
 dataout = [freq, S11, S12, S21, S22, PiPiC, PrPrC, PtPtC, R, T, Hr, Hi];
 end
