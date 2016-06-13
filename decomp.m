@@ -3,10 +3,10 @@ function [dataout, HI, HR] = decomp(data, mic_status)
 N=length(data);
 P1 = data(1:floor(N/2)+1,1)./N;
 P2 = data(1:floor(N/2)+1,2)./N;
-P1 = P1(1:5001);
-P2 = P2(1:5001);
+P1 = P1(2:25001);
+P2 = P2(2:25001);
 
-freq = [1:length(P1)]';
+freq = .2*[1:length(P1)]';
 % 
 % coeff = load('Hc');
 % Hcr = polyval(coeff.rline, freq);

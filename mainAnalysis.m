@@ -4,9 +4,9 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/1', d); %must change to file that you want to load from
+filename=sprintf('Experimental Data/%s/2', d); %must change to file that you want to load from
 filename_excel=sprintf('Experimental Data/%s/1.xlsx', d); %must change to file that you want to save to
-sheet = 1;
+sheet = 2;
 mic_status = 1;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s', d));
