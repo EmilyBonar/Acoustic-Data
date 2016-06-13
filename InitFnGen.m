@@ -1,4 +1,4 @@
-function [dataout] = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints)
+function [dataout] = InitFnGen(fngen,band,amp, ampoff,wave,channels,readpoints)
 %Called from driverfngen, sets up the function generator, turns on signal,
 %and then proceeds to call driveroscil to take data
 newobjs = instrfind;
@@ -35,13 +35,14 @@ GENOBJ = visa(fngen.Make,fngen.Address);
 fopen(GENOBJ);
 
 %Variable setting
-fprintf(GENOBJ, ['SOURce1:FUNCtion ',num2str(wave)]);%set waveform to desired wave
-fprintf(GENOBJ, ['SOURce1:FREQuency ',num2str(freq)]);%set source frequency
-fprintf(GENOBJ, ['SOURce1:VOLTage ',num2str(amp)]); %set voltage of signal
-fprintf(GENOBJ, ['SOURce1:VOLTage:OFFS ',num2str(ampoff)]); %set voltotage offset
-fprintf(GENOBJ,'OUTPUT ON'); % turn on channel 1 output
+% fprintf(GENOBJ, ['SOURce1:FUNCtion ',num2str(wave)]);%set waveform to desired wave
+% fprintf(GENOBJ, ['SOURce1:VOLTage ',num2str(amp)]); %set voltage of signal
+% fprintf(GENOBJ, ['SOURce1:VOLTage:OFFS ',num2str(ampoff)]); %set voltotage offset
+% fprintf(GENOBJ,'OUTPUT ON'); % turn on channel 1 output
+fprintf(GENOBJ, sprintf('SOURce1:FUNCtion:NOISe:BANDwidth %s', num2str(band)));
+fprintf(GENOBJ, sprintf('SOURce1:APPLy:%s 2e4,%s,%s', num2str(wave), num2str(amp),num2str(ampoff)));
 
-[dataout]=driveroscil(channels,readpoints, freq);%calls driveroscil to collect data
+[dataout]=driveroscil(channels,readpoints);%calls driveroscil to collect data
 
 display('Function Generator Finished')
 end

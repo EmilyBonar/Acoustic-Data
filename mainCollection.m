@@ -3,11 +3,11 @@ clear all;
 %close all;
 clc;
 %% Parameters for Function Generator
-wave='SIN'; %waveform desired
+wave='NOISe'; %waveform desired
 %%Can set wave to [SINusoid,SQUare,RAMP,NOISe,DC,SINC,EXPRise,EXPFall,CARDiac,GAUSsian,ARBitrary]
 %freqrange=[1800:20:1900,1910:10:1990, 2000:2:2050, 2060:10:2140, 2150:20:2250]; %frequency in Hz
 %freqrange=(2000); %frequency in Hz
-freqrange=(1750:10:2250); %frequency in Hz
+band=4000; %frequency in Hz
 amp=.08; %amplitude in V
 ampoff=0; %amplitude offset in V
 
@@ -23,7 +23,7 @@ filename=sprintf('Experimental Data/%s/5', d); %must change to file that you wan
 data = cell(length(freqrange),3);
 
 %% Running different tests
-dataout=driverfngen(freqrange,amp, ampoff,wave,channels,readpoints,data);
+dataout=driverfngen(band,amp, ampoff,wave,channels,readpoints,data);
 
 %% Save Data
 save(filename, 'dataout')

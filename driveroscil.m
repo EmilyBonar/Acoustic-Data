@@ -1,4 +1,4 @@
-function [dataout]=driveroscil(channels,readpoints,freq)
+function [dataout]=driveroscil(channels,readpoints)
 %called by InitFnGen to collect data once the signal is being sent
 %Sets parameters for oscilloscope, calls InitOscil to set them, and then
 %calls PullData to gather data from oscilloscope.
@@ -15,14 +15,13 @@ oscil.ChannelsToRead = channels;
 
 [oscilobj,~]=InitOscil(oscil);%sets up oscilloscope
 
-data = PullDataSynch(oscilobj,oscil);%pulls data from oscilloscope
+data = PullData(oscilobj,oscil);%pulls data from oscilloscope
 
 data.t=transpose(data.t);%transpose data to make it easier to use
 data.V=transpose(data.V);%transpose data to make it easier to use
 
-dataout = cell(1,3);
-dataout{1} = freq;
-dataout{2} = data.t;
-dataout{3} = data.V;
+dataout = cell(1,2);
+dataout{1} = data.t;
+dataout{2} = data.V;
 
 end

@@ -4,8 +4,8 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/5', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/5.xlsx', d); %must change to file that you want to save to
+filename=sprintf('Experimental Data/%s/1', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/1.xlsx', d); %must change to file that you want to save to
 sheet = 1;
 mic_status = 1;
 
