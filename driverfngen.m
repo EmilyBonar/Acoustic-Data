@@ -1,5 +1,4 @@
-function [dataout]=driverfngen(band,amp,ampoff,wave,channels,readpoints,data)
-s=size(freqrange,2);%number of frequencies being run
+function [dataout]=driverfngen(band,amp,ampoff,wave,channels,readpoints)
 s2=size(channels,2);
 
 fngen.Make = 'AGILENT';%Function generator make

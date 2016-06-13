@@ -57,6 +57,7 @@ disp 'Acquiring signal(s)...'
 fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be concatenated with :SINGle command two lines below line to speed things up a little like this -> fprintf(oscilobj, ':SINGle;*CLS')
 
 Start_Time = now;
+pause(4)
 fprintf(oscilobj, ':SINGle');
 
 % Immediately ask scope if it is done with the acquisition via the Operation Status Condition (not Event) Register.
