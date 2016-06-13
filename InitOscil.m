@@ -39,7 +39,7 @@ fprintf(OSCOBJ,':ACQUIRE:TYPE NORMAL');%was NORMAL
 fprintf(OSCOBJ,':ACQUIRE:COUNT 2');
 % fprintf(OSCOBJ, 'TriggerMode normal');
 % fprintf(OSCOBJ, 'Triggerlevel 1');
-fprintf(OSCOBJ, ':TRIGGER:EDGE:SLOPE POSITIVE');
+%fprintf(OSCOBJ, ':TRIGGER:EDGE:SLOPE POSITIVE');
 % fprintf(OSCOBJ,'*IDN?');
 % oscil.TriggerMode = 'normal';
 % oscil.Triggerlevel = 0.5;

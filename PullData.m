@@ -146,7 +146,8 @@ for chanindex = oscil.ChannelsToRead
      %sampling at 4million can see wierd up down .004 jumps every frew
      %samples most likely due to floating point rounding or something of
      %that nature. deemed not critical for data analysis for now.
-    
+%    plot(wave.XData,wave.YData)
+     
     dataout.t(n,:) = wave.XData;
     dataout.V(n,:) = wave.YData;
     n = n+1;

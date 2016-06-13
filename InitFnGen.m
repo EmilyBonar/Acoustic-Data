@@ -1,4 +1,4 @@
-function [dataout] = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints)
+function [dataout] = InitFnGen(fngen,freq,amp,ampoff,wave,channels,readpoints)
 %Called from driverfngen, sets up the function generator, turns on signal,
 %and then proceeds to call driveroscil to take data
 newobjs = instrfind;
@@ -10,6 +10,7 @@ if (~isempty(newobjs))
     %and free up the object resources
     delete(newobjs);
 end
+instrreset;
 
 %Remove the object list from the workspace.
 clear newobjs;

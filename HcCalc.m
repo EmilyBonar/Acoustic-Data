@@ -3,12 +3,12 @@ function HcCalc
 %positions have been switched.
 
 d = date;
-filename1 = sprintf('Experimental Data/%s/1', d);
-filename2 = sprintf('Experimental Data/%s/1', d);
+filename1 = sprintf('Experimental Data/%s/mics at back of tube', d);
+filename2 = sprintf('Experimental Data/%s/mics at back of tube', d);
 sheet1 = 1;
 sheet2 = 2;
 
-range = (1500:10:2500);
+range = (1700:25:2300);
 l = length(range);
 
 H12 = xlsread(filename1, sheet1, sprintf('K2:K%i',l+1)) + i*xlsread(filename1, sheet1, sprintf('L2:L%i',l+1));
@@ -16,8 +16,8 @@ H21 = xlsread(filename2, sheet2, sprintf('K2:K%i',l+1)) + i*xlsread(filename2, s
 
 format long g
 Hc = sqrt(H12.*H21);
-rline = polyfit((range)', real(Hc), 3)
-iline = polyfit((range)', imag(Hc), 3)
+rline = polyfit((range)', real(Hc), 3);
+iline = polyfit((range)', imag(Hc), 3);
 
 save Hc rline iline
 

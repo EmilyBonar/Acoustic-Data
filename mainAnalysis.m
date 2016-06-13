@@ -4,9 +4,9 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/1', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/1.xlsx', d); %must change to file that you want to save to
-sheet = 3;
+filename=sprintf('Experimental Data/%s/naked mics2 round 4 5point8in from side', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/naked mics2 round 4 5point8in from side.xlsx', d); %must change to file that you want to save to
+sheet = 2;
 mic_status = 1;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s', d));
@@ -25,19 +25,20 @@ dataout = zeros(length(datain), 12);
 
 fcount = size(datain);
 for x = 1:fcount(1)
-%for x = 1:1
+
     pos = x;
     freq = datain{x,1};
     time = datain{x,2};
     volts = datain{x,3};
-    
+
     fs=1/(time(2,1)-time(1,1));
     for i=1:s
         p(:,i)=volts(:,i)./correction(i);%turn voltage into pressure
     end
-    
+    %
     fourier = fft(p);
-   
+    %plot(abs(fourier))
+    
     %% Analysis and Decomposition of Reflection
     [dataout(x,:), HI(x, 1), HR(x, 1)] = decomp(fourier, mic_status, filename, sheet, freq, pos); 
     %[f S11 S12 S21 S22 PiPiC PrPrC PtPtC R T H12r H12i] 

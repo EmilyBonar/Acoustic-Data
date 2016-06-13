@@ -3,6 +3,10 @@ function [dataout, HI, HR] = decomp(data, mic_status, filename, sheet, freq, pos
 N=length(data);
 P1 = data(1:floor(N/2)+1,1)./N;
 P2 = data(1:floor(N/2)+1,2)./N;
+% plot(abs(P1))
+% axis([700 2300 0 .25])
+% plot(abs(P2))
+% axis([1700 2300 0 .25])
 
 coeff = load('Hc');
 Hcr = polyval(coeff.rline, freq);
@@ -16,8 +20,8 @@ if mic_status == 1
     x2 = 0.0508;
     s = x1-x2; %distance between mics in m
     
-    [~, m1] = max(abs(P1));
-    [~, m2] = max(abs(P2));
+    [a1, m1] = max(P1);
+    [a2, m2] = max(P2);
     P1 = P1(m1);
     P2 = P2(m2);
     
@@ -29,10 +33,11 @@ if mic_status == 1
     H12 = S12/S11;
     H12 = H12/Hc;
     
-    HI = exp(-i*k*s); 
+    HI = exp(-i*k*s);
     HR = exp(i*k*s);
-    PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/((HR-HI)*conj((HI-HR)));
-    PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HI-HR)));
+    
+    PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/((HR-HI)*conj((HR-HI)));
+    PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HR-HI)));
     
     R = PrPrC/PiPiC;
     [PtPtC, T] = deal(0);
@@ -54,7 +59,7 @@ elseif mic_status == 2
     [~, m3] = max(abs(P_T));
     P_T = P_T(m3);
     PtPtC = P_T*conj(P_T);
-    T = PtPtC/((1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HI-HR))));
+    T = PtPtC/((1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HR-HI))));
 
     [PiPiC,PrPrC,R, Hr, Hi, S11, S22, S12, S21] = deal(0);
 end
