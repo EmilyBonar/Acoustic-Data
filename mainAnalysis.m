@@ -23,23 +23,18 @@ correction=[0.0627,0.0613];%correction factors for mics 1,2
 
 dataout = zeros(length(datain), 12); 
 
-fcount = size(datain);
+time = datain{1};
+volts = datain{2};
 
-for x = 1:fcount(1)
-    pos = x;
-    freq = datain{x,1};
-    time = datain{x,2};
-    volts = datain{x,3};
-
-    for i=1:s
-        p(:,i)=volts(:,i)./correction(i);%turn voltage into pressure
-    end
-
-    fourier = fft(p);
-
-    %% Analysis and Decomposition of Reflection
-    dataout(x,:) = decomp(fourier, mic_status, filename, sheet, freq, pos); 
-    %[f S11 S12 S21 S22 PiPiC PrPrC PtPtC R T H12r H12i] 
+for i=1:s
+    p(:,i)=volts(:,i)./correction(i);%turn voltage into pressure
 end
+
+fourier = fft(p);
+
+%% Analysis and Decomposition of Reflection
+dataout = decomp(fourier, mic_status); 
+%[f S11 S12 S21 S22 PiPiC PrPrC PtPtC R T H12r H12i] 
+
 %% Write to Excel
 excelwritedecomp(filename_excel, sheet, dataout, mic_status)
