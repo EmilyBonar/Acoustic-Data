@@ -1,12 +1,12 @@
-function [dataout, HI, HR] = decomp(data, mic_status)
+function [dataout, HI, HR] = decomp(data, time, band, mic_status)
 
 N=length(data);
-P1 = data(1:floor(N/2)+1,1)./N;
-P2 = data(1:floor(N/2)+1,2)./N;
-P1 = P1(2:25001);
-P2 = P2(2:25001);
+P1 = data(1:floor(N/2)-1,1)./N;
+P2 = data(1:floor(N/2)-1,2)./N;
+% P1 = P1(2:int64(max(max(time)))*(band-2000)+1);
+% P2 = P2(2:int64(max(max(time)))*(band-2000)+1);
 
-freq = .2*[1:length(P1)]';
+freq = 1/double(int64(max(max(time))))*[1:length(P1)]';
 % 
 % coeff = load('Hc');
 % Hcr = polyval(coeff.rline, freq);
@@ -14,6 +14,7 @@ freq = .2*[1:length(P1)]';
 % 
 % Hc = Hcr+Hci; %calculated from experimental testing in an empty channel
 
+disp('Decomposing Data')
 if mic_status == 1
     k = 2*pi*freq/347; %real wavenumber
     x1 = 0.0762;

@@ -87,7 +87,7 @@ else % Acquisition failed for some reason
     throw(Synch_Err)
 end
 
-fprintf(oscilobj,':WAVeform:POINts:MODE Normal')
+fprintf(oscilobj,':WAVeform:POINts:MODE RAW')
 fprintf(oscilobj,':WAVeform:UNSigned 0');
 fprintf(oscilobj,':WAVEFORM:FORMAT WORD');
 fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
