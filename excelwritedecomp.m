@@ -1,5 +1,5 @@
 function excelwritedecomp(filename,sheet,data, mic_status)
-%[f S11 S12 S21 S22 PiPiC PrPrC PtPtC R T H12r H12i]
+%[f S11 S12r S12i S22 PiPiC PrPrC PtPtC R T H12r H12i]
 disp('Writing Data')
 if mic_status == 1
     A=[sprintf('A2')];
@@ -8,7 +8,7 @@ if mic_status == 1
 
     xlswrite(filename, data, sheet,A)
     
-    titles = {'Frequency [Hz]', 'S11 [Pa^2]', 'S12 [Pa^2]', 'S21 [Pa^2]', 'S22 [Pa^2]', 'PiPi* [Pa^2]', 'PrPr* [Pa^2]', '', 'R', '', 'H12r', 'H12i'};
+    titles = {'Frequency [Hz]', 'S11 [Pa^2]', 'S12r [Pa^2]', 'S12i [Pa^2]', 'S22 [Pa^2]', 'PiPi* [Pa^2]', 'PrPr* [Pa^2]', '', 'R', '', 'H12r', 'H12i'};
     xlswrite(filename,titles,sheet, titleA)
     
 elseif mic_status == 2

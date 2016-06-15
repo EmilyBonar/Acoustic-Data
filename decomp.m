@@ -3,17 +3,11 @@ function [dataout, HI, HR] = decomp(data, mic_status, filename, sheet, freq, pos
 N=length(data);
 P1 = data(1:floor(N/2)+1,1)./N;
 P2 = data(1:floor(N/2)+1,2)./N;
-% plot(abs(P1))
-% axis([700 2300 0 .25])
-% plot(abs(P2))
-% axis([1700 2300 0 .25])
 
-coeff = load('Hc');
-Hcr = polyval(coeff.rline, freq);
-Hci = polyval(coeff.iline, freq)*i;
+Hc = load('Hc');
+Hc = ppval(Hc.s,freq); %calculated from experimental testing in an empty channel and interpolated to get the value for the frequency we need
 
-Hc = Hcr+Hci; %calculated from experimental testing in an empty channel
-
+disp('Decomposing Data')
 if mic_status == 1
     k = 2*pi*freq/347; %real wavenumber
     x1 = 0.0762;
@@ -45,6 +39,9 @@ if mic_status == 1
     Hr = real(H12); 
     Hi = imag(H12);
     
+    S12r = real(P2*conj(P1));
+    S12i = imag(P2*conj(P1));
+    
 elseif mic_status == 2
     data = load('Transmission Data');
     H12 = data.H12(pos);
@@ -59,9 +56,10 @@ elseif mic_status == 2
     [~, m3] = max(abs(P_T));
     P_T = P_T(m3);
     PtPtC = P_T*conj(P_T);
-    T = PtPtC/((1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HR-HI))));
+    T = PtPtC/((1/H12+conj(H12)-conj(H12)/H12*HR-HI)/(((HR-HI)*conj(HR-HI))/S12));
 
-    [PiPiC,PrPrC,R, Hr, Hi, S11, S22, S12, S21] = deal(0);
+    [PiPiC,PrPrC,R, Hr, Hi, S11, S22, S12r, S12i] = deal(0);
 end
-dataout = [freq, S11, S12, S21, S22, PiPiC, PrPrC, PtPtC, R, T, Hr, Hi];
+dataout = [freq, S11, S12r, S12i, S22, PiPiC, PrPrC, PtPtC, R, T, Hr, Hi];
+%Remember, S12 = S21*
 end
