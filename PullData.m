@@ -58,6 +58,7 @@ fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be 
 
 Start_Time = now;
 fprintf(oscilobj, ':SINGle');
+fprintf(oscilobj, ':TRIGger:FORCe');
 
 % Immediately ask scope if it is done with the acquisition via the Operation Status Condition (not Event) Register.
 Status = str2num(query(oscilobj, ':OPERegister:CONDition?')); 

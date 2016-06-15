@@ -36,8 +36,8 @@ if mic_status == 1
     HI = exp(-i*k*s);
     HR = exp(i*k*s);
     
-    PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/((HR-HI)*conj((HR-HI)));
-    PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/((HR-HI)*conj((HR-HI)));
+    PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/(((HR-HI)*conj(HR-HI))/S12);
+    PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/(((HR-HI)*conj(HR-HI))/S12);
     
     R = PrPrC/PiPiC;
     [PtPtC, T] = deal(0);
