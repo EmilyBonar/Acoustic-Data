@@ -1,11 +1,15 @@
-function [dataout]=driverfngen(band,amp,ampoff,wave,channels,readpoints)
+function [dataout]=driverfngen(band,amp,ampoff,wave,channels,readpoints, reps)
 s2=size(channels,2);
 
 fngen.Make = 'AGILENT';%Function generator make
 fngen.Address = 'USB0::0x0957::0x4B07::MY53400461::0::INSTR';%USB address of fnggen
 %If USB address does not register, unplug usb and plug back in
 
-dataout = InitFnGen(fngen,band,amp,ampoff,wave,channels,readpoints);%calls to initialize the function gen
+for x = 1:reps
+    sprintf('Run %i out of %i',x, reps)
+    dataout(x,:) = InitFnGen(fngen,band,amp,ampoff,wave,channels,readpoints);%calls to initialize the function gen
+    clc
+end
 
 %% Turn off function generator
 %connects to function generator to turn off signal after all frequencies

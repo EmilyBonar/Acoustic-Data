@@ -8,8 +8,9 @@ wave='NOISe'; %waveform desired
 %freqrange=[1800:20:1900,1910:10:1990, 2000:2:2050, 2060:10:2140, 2150:20:2250]; %frequency in Hz
 %freqrange=(2000); %frequency in Hz
 band=25000; %frequency in Hz
-amp=.1; %amplitude in V
+amp=1.5; %amplitude in V
 ampoff=0; %amplitude offset in V
+reps = 5; %how many runs will be averaged together
 
 %% Parameters for Oscilloscope
 channels=[1,3];%what channels to take from
@@ -21,7 +22,7 @@ d = date;
 filename=sprintf('Experimental Data/%s/2', d); %must change to file that you want to save to
 
 %% Running different tests
-dataout=driverfngen(band,amp, ampoff,wave,channels,readpoints);
+dataout=driverfngen(band,amp, ampoff,wave,channels,readpoints, reps);
 
 %% Save Data
 save(filename, 'dataout')

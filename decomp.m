@@ -3,10 +3,12 @@ function [dataout, HI, HR] = decomp(data, time, band, mic_status)
 N=length(data);
 P1 = data(1:floor(N/2)-1,1)./N;
 P2 = data(1:floor(N/2)-1,2)./N;
-% P1 = P1(2:int64(max(max(time)))*(band-2000)+1);
-% P2 = P2(2:int64(max(max(time)))*(band-2000)+1);
+P1 = P1(2:int64(max(max(time)))*(max(band))+1);
+P2 = P2(2:int64(max(max(time)))*(max(band))+1);
 
 freq = 1/double(int64(max(max(time))))*[1:length(P1)]';
+
+%plot(freq, abs(P1), freq, abs(P2))
 % 
 % coeff = load('Hc');
 % Hcr = polyval(coeff.rline, freq);
