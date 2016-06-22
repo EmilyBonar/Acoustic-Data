@@ -35,11 +35,15 @@ GENOBJ = visa(fngen.Make,fngen.Address);
 fopen(GENOBJ);
 
 fprintf(GENOBJ, sprintf('OUTPUT OFF'));
-pause(.5);
+
+pause(1);
 
 %Variable setting
 fprintf(GENOBJ, sprintf('SOURce1:FUNCtion:NOISe:BANDwidth %s', num2str(band)));
 fprintf(GENOBJ, sprintf('SOURce1:APPLy:%s 2e4,%s,%s', num2str(wave), num2str(amp),num2str(ampoff)));
+
+pause(5); %allow system to equalize
+
 [dataout]=driveroscil(channels,readpoints, band);%calls driveroscil to collect data
 
 display('Function Generator Finished')
