@@ -5,9 +5,14 @@ fngen.Make = 'AGILENT';%Function generator make
 fngen.Address = 'USB0::0x0957::0x4B07::MY53400461::0::INSTR';%USB address of fnggen
 %If USB address does not register, unplug usb and plug back in
 
+dataout = cell(1,3);
+dataout{3} = zeros(readpoints,s2);
 for x = 1:reps
     sprintf('Run %i out of %i',x, reps)
-    dataout(x,:) = InitFnGen(fngen,band,amp,ampoff,wave,channels,readpoints);%calls to initialize the function gen
+    d = InitFnGen(fngen,band,amp,ampoff,wave,channels,readpoints);%calls to initialize the function gen
+    dataout{1} = d{1};
+    dataout{2} = d{2};
+    dataout{3} = dataout{3} + 1/reps.*d{3};
     clc
 end
 
