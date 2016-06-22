@@ -57,7 +57,6 @@ disp 'Acquiring signal(s)...'
 fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be concatenated with :SINGle command two lines below line to speed things up a little like this -> fprintf(oscilobj, ':SINGle;*CLS')
 
 Start_Time = now;
-pause(6)
 fprintf(oscilobj, ':SINGle');
 fprintf(oscilobj, ':TRIGger:FORCe');
 

@@ -28,11 +28,14 @@ GENOBJ = icdevice('agilent_33120a.mdd', interfaceObj);
 connect(GENOBJ);
 
 % Execute device object function(s).
-devicereset(GENOBJ);
+%devicereset(GENOBJ);
 fclose(interfaceObj);
 delete(interfaceObj);
 GENOBJ = visa(fngen.Make,fngen.Address);
 fopen(GENOBJ);
+
+fprintf(GENOBJ, sprintf('OUTPUT OFF'));
+pause(.5);
 
 %Variable setting
 fprintf(GENOBJ, sprintf('SOURce1:FUNCtion:NOISe:BANDwidth %s', num2str(band)));

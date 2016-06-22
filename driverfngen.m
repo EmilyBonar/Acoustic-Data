@@ -12,7 +12,7 @@ for x = 1:reps
     d = InitFnGen(fngen,band,amp,ampoff,wave,channels,readpoints);%calls to initialize the function gen
     dataout{1} = d{1};
     dataout{2} = d{2};
-    dataout{3} = dataout{3} + 1/reps.*d{3};
+    dataout{3} = dataout{3} + 1/reps.*fft(d{3});
     clc
 end
 

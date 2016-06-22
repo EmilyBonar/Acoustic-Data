@@ -4,13 +4,13 @@ N=length(data);
 P1 = data(1:floor(N/2)-1,1)./N;
 P2 = data(1:floor(N/2)-1,2)./N;
 P3 = data(1:floor(N/2)-1,3)./N;
-P1 = P1(2:int64(max(max(time)))*(max(band))+1);
-P2 = P2(2:int64(max(max(time)))*(max(band))+1);
-P3 = P3(2:int64(max(max(time)))*(max(band))+1);
+P1 = P1(2:int64(max(max(time))*(max(band)))+1);
+P2 = P2(2:int64(max(max(time))*(max(band)))+1);
+P3 = P3(2:int64(max(max(time))*(max(band)))+1);
 
 P_T = P3;
 
-freq = 1/double(int64(max(max(time))))*[1:length(P1)]';
+freq = double(int64(1/max(max(time))*[1:length(P1)]'));
 
 %plot(freq, abs(P1), freq, abs(P2))
 % 

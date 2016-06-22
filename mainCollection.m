@@ -10,7 +10,7 @@ wave='NOISe'; %waveform desired
 band=25000; %frequency in Hz
 amp=1.5; %amplitude in V
 ampoff=0; %amplitude offset in V
-reps = 100; %how many runs will be averaged together
+reps = 500; %how many runs will be averaged together
 
 %% Parameters for Oscilloscope
 channels=[1,3,4];%what channels to take from
@@ -19,7 +19,7 @@ readpoints=2e6;% number of readpoints to take (oscilloscope window: sampling rat
 %% Data Writing Parameters
 d = date;
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s', d)); %create date folder
-filename=sprintf('Experimental Data/%s/M0P2B2R1-1 Noise, 100 reps', d); %must change to file that you want to save to
+filename=sprintf('Experimental Data/%s/M0P0B2R1-1 Noise, 500 reps', d); %must change to file that you want to save to
 
 %% Running different tests
 dataout=driverfngen(band,amp, ampoff,wave,channels,readpoints, reps);
