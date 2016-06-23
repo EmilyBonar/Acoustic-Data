@@ -5,9 +5,9 @@ clc;
 
 d = date;
 filename=sprintf('Experimental Data/%s/M0P0B2R3-1 Noise, 100 reps', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/M0P0B2R3 Noise, 100 reps.xlsx', d); %must change to file that you want to save to
-sheet = 2;
-resample = 4;
+filename_excel=sprintf('Experimental Data/%s/M0P0B2R1 Noise, 100 reps.xlsx', d); %must change to file that you want to save to
+sheet = 3;
+resample = 1;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s', d));
 

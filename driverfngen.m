@@ -13,6 +13,7 @@ for x = 1:reps
     dataout{1} = d{1};
     dataout{2} = d{2};
     dataout{3} = dataout{3} + 1/reps.*fft(d{3});
+    plot(abs(dataout{3}(2:20000)))
     clc
 end
 
