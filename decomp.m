@@ -32,8 +32,8 @@ H12 = H12/Hc;
 HI = exp(-i*k*s);
 HR = exp(i*k*s);
 
-PrPrC = (1/H12+conj(H12)-conj(H12)/H12*HI-HR)/(((HR-HI)*conj(HR-HI))/S12);
-PiPiC = (1/H12+conj(H12)-conj(H12)/H12*HR-HI)/(((HR-HI)*conj(HR-HI))/S12);
+PrPrC = S11*(1+conj(H12)*H12-conj(H12)*HI-H12*HR)/((HR-HI)*conj(HR-HI));
+PiPiC = S11*(1+conj(H12)*H12-conj(H12)*HR-H12*HI)/((HR-HI)*conj(HR-HI));
 PtPtC = P_T*conj(P_T);
 
 R = PrPrC/PiPiC;
@@ -42,8 +42,8 @@ T = PtPtC/PiPiC;
 Hr = real(H12); 
 Hi = imag(H12);
 
-S12r = real(P2*conj(P1));
-S12i = imag(P2*conj(P1));
+S12r = real(S12);
+S12i = imag(S12);
 
 dataout = [freq, S11, S12r, S12i, S22, PiPiC, PrPrC, PtPtC, R, T, Hr, Hi];
 %Remember, S12 = S21*

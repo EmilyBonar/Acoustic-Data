@@ -3,12 +3,12 @@ function HcCalc
 %positions have been switched.
 
 d = date;
-filename1 = sprintf('Experimental Data/%s/M1P0B2R1', d);
-filename2 = sprintf('Experimental Data/%s/M1P0B2R1', d);
+filename1 = sprintf('Experimental Data/%s/M0P0B2R1', d);
+filename2 = sprintf('Experimental Data/%s/M0P0B2R1', d);
 sheet1 = 1;
 sheet2 = 2;
 
-range=[1800:25:1900,1910:20:1970,1975:5:2000,2001:1:2039, 2040:5:2055, 2060:20:2140, 2150:25:2250];
+range=(1200:25:3000);
 l = length(range);
 
 H12 = xlsread(filename1, sheet1, sprintf('K2:K%i',l+1)) + i*xlsread(filename1, sheet1, sprintf('L2:L%i',l+1));
@@ -23,7 +23,7 @@ save('Hc', 's')
 save([filename1 ' Hc'], 's')
 
 plot(range, imag(Hc), '--', range, real(Hc), ':', range, abs(Hc))
-
 legend('Imaginary', 'Real', 'Absolute');
+
 end
 

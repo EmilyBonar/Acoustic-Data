@@ -6,9 +6,9 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/M0P0B2R4-1E2', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/M0P0B2R4E2.xlsx', d); %must change to file that you want to save to
-sheet = 1;
+filename=sprintf('Experimental Data/%s/M0P0B2R1-1', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/M0P0B2R1.xlsx', d); %must change to file that you want to save to
+sheet = 3;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s/', d));
 excelClear(filename_excel, sheet);
