@@ -3,27 +3,45 @@ function HcCalc
 %positions have been switched.
 
 d = date;
-filename1 = sprintf('Experimental Data/%s/M0P0B2R1', d);
-filename2 = sprintf('Experimental Data/%s/M0P0B2R1', d);
+filename1 = sprintf('Experimental Data/%s/M0P0B2R2', d);
+filename2 = sprintf('Experimental Data/%s/M0P0B2R2', d);
 sheet1 = 1;
 sheet2 = 2;
 
-range=(1200:25:3000);
+mic_status = [1,2];
+
+range=(1000:25:5000);
 l = length(range);
 
-H12 = xlsread(filename1, sheet1, sprintf('K2:K%i',l+1)) + i*xlsread(filename1, sheet1, sprintf('L2:L%i',l+1));
-H21 = xlsread(filename2, sheet2, sprintf('K2:K%i',l+1)) + i*xlsread(filename2, sheet2, sprintf('L2:L%i',l+1));
+alph = 'a':'z';
 
-format long g
-Hc = sqrt(H12.*H21);
+for x = mic_status(1):mic_status(end)
+    pos = alph(11+(x-1)*10);
+    H12 = xlsread(filename1, sheet1, sprintf('%s2:%s%i', pos, pos, l+1)) + i*xlsread(filename1, sheet1, sprintf('%s2:%s%i', pos+1, pos+1, l+1));
+    H21 = xlsread(filename2, sheet2, sprintf('%s2:%s%i', pos, pos, l+1)) + i*xlsread(filename2, sheet2, sprintf('%s2:%s%i', pos+1, pos+1, l+1));
 
-s = spline(range', Hc);
+    format long g
+    Hc = sqrt(H12.*H21);
+    
+%     figure()
+    if x == 1
+        r = spline(range', Hc);
 
-save('Hc', 's')
-save([filename1 ' Hc'], 's')
+        save('HcR', 'r')
+        save([filename1 ' HcR'], 'r')
+        title('HcR')
+    elseif x == 2
+        t = spline(range', Hc);
 
-plot(range, imag(Hc), '--', range, real(Hc), ':', range, abs(Hc))
-legend('Imaginary', 'Real', 'Absolute');
+        save('HcT', 't')
+        save([filename1 ' HcT'], 't')
+        title('HcT')
+    end
+    
+    plot(range, imag(Hc), '--', range, real(Hc), ':', range, abs(Hc))
+    legend('Imaginary', 'Real', 'Absolute');
+    hold on
+end
 
 end
 
