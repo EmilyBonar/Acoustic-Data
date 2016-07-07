@@ -6,8 +6,8 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/M1P0B2R3-1T', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/M1P0B2R3.xlsx', d); %must change to file that you want to save to
+filename=sprintf('Experimental Data/%s/M1P0R3-1T', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/M1P0R3.xlsx', d); %must change to file that you want to save to
 sheet = 1;
 mic_status = 2; %1 is decomposing reflection, 2 is decomposing transmission
 HcOn = 1;
@@ -45,8 +45,10 @@ for x = 1:fcount(1)
     dataout(x,:) = decomp(fourier, freq, pos, mic_status, HcOn);
     %[f S11 S12r S12i S22 PiPiC PrPrC PtPtC R T H12r H12i] 
 end
-PiPiC = dataout(:,6);
-save('Transmission Data', 'PiPiC')
+if mic_status == 1
+    PiPiC = dataout(:,6);
+    save('Transmission Data', 'PiPiC')
+end
 %% Write to Excel
 excelwritedecomp(filename_excel, sheet, dataout, mic_status)
 % end

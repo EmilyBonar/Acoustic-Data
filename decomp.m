@@ -22,7 +22,6 @@ if mic_status == 1
         Hc = load('HcR');
         Hc = ppval(Hc.r,freq); %calculated from experimental testing in an empty channel and interpolated to get the value for the frequency we need
     end
-    
     P_T = P3;
     
     P_T = max(P_T);

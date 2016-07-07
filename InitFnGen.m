@@ -45,6 +45,8 @@ fprintf(GENOBJ, ['SOURce1:VOLTage ',num2str(amp)]); %set voltage of signal
 fprintf(GENOBJ, ['SOURce1:VOLTage:OFFS ',num2str(ampoff)]); %set voltotage offset
 fprintf(GENOBJ,'OUTPUT ON'); % turn on channel 1 output
 
+pause(1)
+
 [dataout]=driveroscil(channels,readpoints, freq);%calls driveroscil to collect data
 
 display('Function Generator Finished')

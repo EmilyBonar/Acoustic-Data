@@ -3,14 +3,14 @@ function HcCalc
 %positions have been switched.
 
 d = date;
-filename1 = sprintf('Experimental Data/%s/M0P0B2R2', d);
-filename2 = sprintf('Experimental Data/%s/M0P0B2R2', d);
+filename1 = sprintf('Experimental Data/%s/M0P0R1', d);
+filename2 = sprintf('Experimental Data/%s/M0P0R1', d);
 sheet1 = 1;
 sheet2 = 2;
 
 mic_status = [1,2];
 
-range=(1000:25:5000);
+range=[1500:25:1900,1920:20:1960,1965:5:1999,2000:2:2024, 2025:1:2039, 2040:5:2055, 2060:20:2140, 2150:25:2800];
 l = length(range);
 
 alph = 'a':'z';
@@ -23,7 +23,6 @@ for x = mic_status(1):mic_status(end)
     format long g
     Hc = sqrt(H12.*H21);
     
-%     figure()
     if x == 1
         r = spline(range', Hc);
 
