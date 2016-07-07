@@ -1,4 +1,4 @@
-function [dataout, PiPiC] = decomp(data, freq, pos, mic_status, HcOn)
+function [dataout, PiPiC] = decomp(data, freq, pos, mic_status, HcOn, empty)
 
 N=length(data);
 P1 = data(1:floor(N/2)+1,1)./N;
@@ -17,7 +17,7 @@ P2 = max(P2);
 
 Hc = 1;
 
-if mic_status == 1
+if empty == 1
     if HcOn == 1
         Hc = load('HcR');
         Hc = ppval(Hc.r,freq); %calculated from experimental testing in an empty channel and interpolated to get the value for the frequency we need
@@ -25,6 +25,31 @@ if mic_status == 1
     P_T = P3;
     
     P_T = max(P_T);
+    
+    S11_R = P1*conj(P1);
+    S12_R = P2*conj(P1);
+    S21_R = P1*conj(P2);
+    S22_R = P2*conj(P2);
+
+    H12 = S12_R/S11_R;
+    H12 = H12/Hc;
+
+    HI = exp(-i*k*s);
+    HR = exp(i*k*s);
+    
+    PiPiC = S11_R*(1+conj(H12)*H12-conj(H12)*HR-H12*HI)/((HR-HI)*conj(HR-HI));
+    [freq, S11_R, S12r_R, S12i_R, S22_R, PrPrC_R, PtPtC_R, R_R, T_R, Hr_R, Hi_R, S11_T, S12r_T, S12i_T, S22_T, PrPrC_T, PtPtC_T, R_T, T_T, Hr_T, Hi_T] = deal(0);
+elseif mic_status == 1
+    if HcOn == 1
+        Hc = load('HcR');
+        Hc = ppval(Hc.r,freq); %calculated from experimental testing in an empty channel and interpolated to get the value for the frequency we need
+    end
+    P_T = P3;
+    
+    P_T = max(P_T);
+    
+    data = load('Incidence Data');
+    PiPiC = data.PiPiC(pos);
 
     S11_R = P1*conj(P1);
     S12_R = P2*conj(P1);
@@ -38,7 +63,7 @@ if mic_status == 1
     HR = exp(i*k*s);
 
     PrPrC_R = S11_R*(1+conj(H12)*H12-conj(H12)*HI-H12*HR)/((HR-HI)*conj(HR-HI));
-    PiPiC = S11_R*(1+conj(H12)*H12-conj(H12)*HR-H12*HI)/((HR-HI)*conj(HR-HI));
+    %PiPiC = S11_R*(1+conj(H12)*H12-conj(H12)*HR-H12*HI)/((HR-HI)*conj(HR-HI));
     PtPtC_R = P_T*conj(P_T);
     
     R_R = PrPrC_R/PiPiC;
@@ -57,7 +82,7 @@ elseif mic_status == 2
         Hc = ppval(Hc.t,freq); %calculated from experimental testing in an empty channel and interpolated to get the value for the frequency we need
     end
     
-    data = load('Transmission Data');
+    data = load('Incidence Data');
     PiPiC = data.PiPiC(pos);
     
     S11_T = P1*conj(P1);

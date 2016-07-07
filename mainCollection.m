@@ -19,7 +19,7 @@ readpoints=4e6*1;% number of readpoints to take (oscilloscope window: sampling r
 %% Data Writing Parameters
 d = date;
 [s,m1,m2] = mkdir(sprintf('Experimental Data/%s', d)); %create date folder
-filename=sprintf('Experimental Data/%s/M1P0R3-1T', d); %must change to file that you want to save to
+filename=sprintf('Experimental Data/%s/M1P2R1-1T', d); %must change to file that you want to save to
  
 data = cell(length(freqrange),3);
 

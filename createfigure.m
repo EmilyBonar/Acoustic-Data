@@ -2,11 +2,11 @@ function createfigure
 
 d = date;
 
-filenames = {sprintf('Experimental Data/%s/M1P0R3', d)};
+filenames = {sprintf('Experimental Data/%s/M1P2R1', d)};
 sheets = [1];
 lr = 0;
 
-figures = [1 0 0];
+figures = [1 1 0];
 
 % figures(1) is a graph of R and T
 % figures(2) is a graph of PiPi*, PrPr*, and PtPt*
