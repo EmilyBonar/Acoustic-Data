@@ -2,11 +2,11 @@ function createfigure
 
 d = date;
 
-filenames = {sprintf('Experimental Data/%s/M1P0R3', d)};
+filenames = {sprintf('Experimental Data/%s/M1P0R1', d)};
 sheets = [1];
 lr = 0;
 
-figures = [1 0 0];
+figures = [1 1 1];
 
 % figures(1) is a graph of R and T
 % figures(2) is a graph of PiPi*, PrPr*, and PtPt*
@@ -111,9 +111,9 @@ if figures(2) == 1 % figures(2) is a graph of PiPi*, PrPr*, and PtPt*
     for d = 1:length(filenames)
         plot1 = plot(freqs{d}, Pi{d}, freqs{d}, Pr{d}, freqs{d}, Pt{d}, 'LineWidth', 2);
         if lr == 0
-            labels{end+1} = sprintf('P_iP_i^*%i', d);
-            labels{end+1} = sprintf('P_rP_r^*%i', d);
-            labels{end+1} = sprintf('P_tP_t^*%i', d);
+            labels{end+1} = sprintf('P_iP_i^*_%i', d);
+            labels{end+1} = sprintf('P_rP_r^*_%i', d);
+            labels{end+1} = sprintf('P_tP_t^*_%i', d);
         else
             labels{end+1} = sprintf('P_iP_i^*%i%s', ceil(d/2),LR{int64(1+abs(cos(pi/2*d)))});
             labels{end+1} = sprintf('P_rP_r^*%i%s', ceil(d/2),LR{int64(1+abs(cos(pi/2*d)))});

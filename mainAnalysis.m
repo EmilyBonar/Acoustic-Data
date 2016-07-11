@@ -6,10 +6,10 @@ clear all;
 clc;
 
 d = date;
-filename=sprintf('Experimental Data/%s/M1P0R3-1T', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/M1P0R3.xlsx', d); %must change to file that you want to save to
+filename=sprintf('Experimental Data/%s/M0P0R1-1R', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/M0P0R1.xlsx', d); %must change to file that you want to save to
 sheet = 1;
-mic_status = 2; %1 is decomposing reflection, 2 is decomposing transmission
+mic_status = 1; %1 is decomposing reflection, 2 is decomposing transmission
 HcOn = 1;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s/', d));
