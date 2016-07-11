@@ -21,7 +21,6 @@ data.t=transpose(data.t);%transpose data to make it easier to use
 data.V=transpose(data.V);%transpose data to make it easier to use
 
 dataout = cell(1,3);
-dataout{1} = band;
 dataout{2} = data.t;
 dataout{3} = data.V;
 
