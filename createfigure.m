@@ -2,11 +2,11 @@ function createfigure
 
 d = date;
 
-filenames = {sprintf('Experimental Data/%s/M1P0R1', d)};
+filenames = {sprintf('Experimental Data/%s/M0P0R1', d)};
 sheets = [1];
 lr = 0;
 
-figures = [1 1 1];
+figures = [1 0 0];
 
 % figures(1) is a graph of R and T
 % figures(2) is a graph of PiPi*, PrPr*, and PtPt*
@@ -43,8 +43,8 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     set(figure1, 'Position', [600 250 1000 700])
     
     for d = 1:length(filenames)
-        R{d} = data{d}(:,9);
-        T{d} = data{d}(:,20);
+        R{d} = data{d}(:,8);
+        T{d} = data{d}(:,9);
     end
 
     % Create axes
@@ -52,7 +52,7 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     %% Uncomment the following line to preserve the X-limits of the axes
     xlim(axes1,[minf maxf]);
     %% Uncomment the following line to preserve the Y-limits of the axes
-    ylim(axes1,[0 1]);
+    ylim(axes1,[-2.5 2]);
     box(axes1,'on');
     hold(axes1,'on');
     
@@ -75,7 +75,7 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     xlabel('Frequency (Hz)');
 
     % Create ylabel
-    ylabel('Normalized PP*');
+    ylabel('Normalized');
     
     title('Reflectance vs Transmittance');
 
