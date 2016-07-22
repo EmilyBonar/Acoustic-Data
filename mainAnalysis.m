@@ -35,10 +35,10 @@ for x = 1:fcount(1)
     freq = datainr{x,1};
     time = datainr{x,2};
     voltsr = datainr{x,3};
-    voltsr = voltsr(:,1:2);
+    %voltsr = voltsr(:,1:2);
     
     voltst = dataint{x,3};
-    voltst = voltst(:,1:2);
+    %voltst = voltst(:,1:2);
     
     volts = [voltsr voltst];
     fprintf('Frequency: %d\n',freq)

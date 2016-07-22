@@ -9,10 +9,11 @@ P4 = data(1:floor(N/2)+1,4)./N;
 disp('Decomposing Data')
 
 k = 2*pi*freq/347; %real wavenumber
-x12 = .165+.29845;
-x11 = .165+.29845+.0254;
-x21 = .165+.29845+.0254+.2667;
-x22 = .165+.29845+.0254+.2667+.0254;
+%x12 = .165+.29845;
+x12 = 0;
+x11 = x12+.0254;
+x21 = x11+.2667;
+x22 = x21+.0254;
 
 P1 = max(P1);
 P2 = max(P2);
@@ -39,12 +40,12 @@ H21_1 = P1/P2;
 H21_2 = P4/P3;
 H11_21 = P3/P2;
 
-R1 = (H21_1*exp(i*k*x11)-exp(i*k*x12))/(exp(-i*k*x12)-H21_1*exp(-i*k*x11));
-R2 = (H21_2*exp(-i*k*x21)-exp(-i*k*x22))/(exp(i*k*x22)-H21_2*exp(i*k*x21));
-T12 = H11_21*(exp(i*k*x11)+R1*exp(-i*k*x11))/(exp(i*k*x21)+1/(R2*exp(-i*k*x21)));
+R1 = (H121.*exp(j*k*x11) - exp(j*k*x12)) ./ (exp(-j*k*x12) - H121.*exp(-j*k*x11));
+R2 = (H221.*exp(-j*k*x21) - exp(-j*k*x22)) ./ (exp(j*k*x22) - H221.*exp(j*k*x21));
+T12 = H2111 .* (exp(j*k*x11) + R1.*exp(-j*k*x11)) ./ (exp(j*k*x21) + 1./R2.*exp(-j*k*x21));
 
-R = (R1-T12^2/R2)/(1-T12^2/R2^2);
-T = (T12*(1-R1/R2))/(1-T12^2/R2^2);
+T = T12.*(1-R1./R2)./(1-(T12./R2).^2);
+R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
 
 dataout = [freq, real(H21_1),imag(H21_1),real(H21_2),imag(H21_2), real(H11_21),imag(H11_21), R, T];
 end
