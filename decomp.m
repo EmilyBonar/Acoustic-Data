@@ -36,16 +36,19 @@ if correct == 1
     P4 = a4*exp(i*p4);
 end
 
-H21_1 = P1/P2;
-H21_2 = P4/P3;
-H11_21 = P3/P2;
+H121 = P1/P2;
+H221 = P4/P3;
+H2111 = P3/P2;
 
 R1 = (H121.*exp(j*k*x11) - exp(j*k*x12)) ./ (exp(-j*k*x12) - H121.*exp(-j*k*x11));
 R2 = (H221.*exp(-j*k*x21) - exp(-j*k*x22)) ./ (exp(j*k*x22) - H221.*exp(j*k*x21));
 T12 = H2111 .* (exp(j*k*x11) + R1.*exp(-j*k*x11)) ./ (exp(j*k*x21) + 1./R2.*exp(-j*k*x21));
 
-T = T12.*(1-R1./R2)./(1-(T12./R2).^2);
-R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
+t = T12.*(1-R1./R2)./(1-(T12./R2).^2);
+r = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
 
-dataout = [freq, real(H21_1),imag(H21_1),real(H21_2),imag(H21_2), real(H11_21),imag(H11_21), R, T];
+T = abs(t).^2;
+R = abs(r).^2;
+
+dataout = [freq, real(H121),imag(H121),real(H221),imag(H221), real(H2111),imag(H2111), R, T];
 end

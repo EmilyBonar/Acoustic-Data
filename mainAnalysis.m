@@ -10,7 +10,7 @@ reflection=sprintf('Experimental Data/%s/M0P0R1-1R', d); %must change to file th
 transmission=sprintf('Experimental Data/%s/M0P0R1-1T', d); %must change to file that you want to load from
 filename_excel=sprintf('Experimental Data/%s/M0P0R1.xlsx', d); %must change to file that you want to save to
 sheet = 1;
-correct = 1;
+correct = 0;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s/', d));
 

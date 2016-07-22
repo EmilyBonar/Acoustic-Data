@@ -1,9 +1,9 @@
 function IdealGen
 d = date;
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s/', d));
-filename=sprintf('Experimental Data/%s/Ideal5', d); %must change to file that you want to save to
+filename=sprintf('Experimental Data/%s/Ideal rshift 270', d); %must change to file that you want to save to
 
-measurement = 1;
+measurement = 0;
 noise = 0;
 attenuation = 0;
 phase = 0;
@@ -21,6 +21,7 @@ Ar = A*0.2;
 snr = 25; %what is this?
 moffset = .0005;
 poffset = pi/16;
+rshift = pi*6/4;
 
 if measurement == 1
     a = 0-moffset;
@@ -66,10 +67,10 @@ for f = 1:length(freq)
         p4 = p4*atten(4);
     end
     if reflection == 1
-        p1 = p1 + atten(5)*Ar*sin(2*pi*freq(f)*t+2*(e-x1)/347*freq(f)*2*pi+ph(1)+pi);
-        p2 = p2 + atten(6)*Ar*sin(2*pi*freq(f)*t+2*(e-x2)/347*freq(f)*2*pi+ph(2)+pi);
-        p3 = p3 + atten(7)*Ar*sin(2*pi*freq(f)*t+2*(e-x3)/347*freq(f)*2*pi+ph(3)+pi);
-        p4 = p4 + atten(8)*Ar*sin(2*pi*freq(f)*t+2*(e-x4)/347*freq(f)*2*pi+ph(4)+pi);
+        p1 = p1 + atten(5)*Ar*sin(2*pi*freq(f)*t+2*(e-x1)/347*freq(f)*2*pi+ph(1)+rshift);
+        p2 = p2 + atten(6)*Ar*sin(2*pi*freq(f)*t+2*(e-x2)/347*freq(f)*2*pi+ph(2)+rshift);
+        p3 = p3 + atten(7)*Ar*sin(2*pi*freq(f)*t+2*(e-x3)/347*freq(f)*2*pi+ph(3)+rshift);
+        p4 = p4 + atten(8)*Ar*sin(2*pi*freq(f)*t+2*(e-x4)/347*freq(f)*2*pi+ph(4)+rshift);
     end
     
     v = [p1 p2 p3 p4];

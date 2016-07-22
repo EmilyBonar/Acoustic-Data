@@ -6,9 +6,9 @@ clear all;
 clc;
 
 d = date;
-idealwave=sprintf('Experimental Data/%s/Ideal5', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/Ideal.xlsx', d); %must change to file that you want to save to
-sheet = 5;
+idealwave=sprintf('Experimental Data/%s/Ideal rshift 270', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/Ideal rshift.xlsx', d); %must change to file that you want to save to
+sheet = 8;
 correct = 0;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s/', d));

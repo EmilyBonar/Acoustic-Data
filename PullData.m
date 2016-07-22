@@ -62,7 +62,7 @@ fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be 
 
 Start_Time = now;
 fprintf(oscilobj, ':SINGle');
-fprintf(oscilobj, ':TRIGger:FORCe');
+fprintf(oscilobj, ':TRIGger:HOLD 2');
 
 % Immediately ask scope if it is done with the acquisition via the Operation Status Condition (not Event) Register.
 Status = str2num(query(oscilobj, ':OPERegister:CONDition?')); 
@@ -82,20 +82,21 @@ else % Acquisition failed for some reason
     disp 'This can happen if there was not enough time to arm the scope, there was no trigger event, or the scope did not finish acquiring.'
     disp 'Visually check the scope for a trigger, adjust settings accordingly.'
     
-    clrdevice(oscilobj); % Clear scope communications interface
-    fprintf(oscilobj, ':STOP') % Stop the scope
-    fclose(oscilobj); % Close communications interface to scope
-    delete(oscilobj); 
-    clear oscilobj; 
-    Synch_Err = MException('myscript:error','Properly closing scope connection and exiting script.');
-    throw(Synch_Err)
+    fprintf(oscilobj, ':TRIGger:FORCe');
+%     clrdevice(oscilobj); % Clear scope communications interface
+%     fprintf(oscilobj, ':STOP') % Stop the scope
+%     fclose(oscilobj); % Close communications interface to scope
+%     delete(oscilobj); 
+%     clear oscilobj; 
+%     Synch_Err = MException('myscript:error','Properly closing scope connection and exiting script.');
+%     throw(Synch_Err)
 end
 
 %% Preamble
 % Maximum value storable in a INT16
 
 disp('Acquiring Preamble')
-pause(.1)
+query(oscilobj, '*OPC?');
 %  split the preambleBlock into individual pieces of info
 preambleBlock = query(oscilobj,':WAVEFORM:PREAMBLE?');
 preambleBlock = regexp(preambleBlock,',','split');

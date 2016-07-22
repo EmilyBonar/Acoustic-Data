@@ -13,7 +13,7 @@ for i=1:s
     freq=freqrange(i);%sets current frequency to variable
     disp(['Frequency: ',num2str(freq)])
     temp = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints,trig);%calls to initialize the function gen
-    dataout(i,:) = {temp{1} temp{2}(1:16:end) temp{3}(1:16:end)};
+    dataout(i,:) = {temp{1} temp{2}(1:16:end,:) temp{3}(1:16:end,:)};
     clc;
 end
 
