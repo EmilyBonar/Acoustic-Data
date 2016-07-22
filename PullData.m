@@ -52,6 +52,10 @@ ACQ_NOT_DONE = 8; %  This is the 4th bit of the Operation Status Condition (and 
     % This is either High (running = 8) or low (stopped and therefore done with acquisition = 0).
 
 %% Acquire
+fprintf(oscilobj,':WAVeform:POINts:MODE RAW')
+fprintf(oscilobj,':WAVeform:UNSigned 0');
+fprintf(oscilobj,':WAVEFORM:FORMAT WORD');
+fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
 
 disp 'Acquiring signal(s)...'
 fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be concatenated with :SINGle command two lines below line to speed things up a little like this -> fprintf(oscilobj, ':SINGle;*CLS')
@@ -87,14 +91,8 @@ else % Acquisition failed for some reason
     throw(Synch_Err)
 end
 
-fprintf(oscilobj,':WAVeform:POINts:MODE Normal')
-fprintf(oscilobj,':WAVeform:UNSigned 0');
-fprintf(oscilobj,':WAVEFORM:FORMAT WORD');
-fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
-
 %% Preamble
 % Maximum value storable in a INT16
-
 
 disp('Acquiring Preamble')
 pause(.1)

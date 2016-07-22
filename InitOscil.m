@@ -35,7 +35,7 @@ fopen(OSCOBJ);
 
 fprintf(OSCOBJ,':TIMEBASE:MODE MAIN');
 % Set up acquisition type and count.
-fprintf(OSCOBJ,':ACQUIRE:TYPE NORMAL');%was NORMAL
+fprintf(OSCOBJ,':ACQUIRE:TYPE HRES');%was NORMAL
 fprintf(OSCOBJ,':ACQUIRE:COUNT 2');
 % fprintf(OSCOBJ, 'TriggerMode normal');
 % fprintf(OSCOBJ, 'Triggerlevel 1');

@@ -12,7 +12,8 @@ fngen.Address = 'USB0::0x0957::0x4B07::MY53400461::0::INSTR';%USB address of fng
 for i=1:s
     freq=freqrange(i);%sets current frequency to variable
     disp(['Frequency: ',num2str(freq)])
-    dataout(i,:) = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints,trig);%calls to initialize the function gen
+    temp = InitFnGen(fngen,freq,amp, ampoff,wave,channels,readpoints,trig);%calls to initialize the function gen
+    dataout(i,:) = {temp{1} temp{2}(1:16:end) temp{3}(1:16:end)};
     clc;
 end
 
