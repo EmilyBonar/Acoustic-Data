@@ -1,8 +1,8 @@
-function createfigure
+function createfigure(filenames,dir)
 
 d = date;
 
-filenames = {sprintf('Experimental Data/%s/M0P0R1', d)};
+%filenames = {sprintf('Experimental Data/21-Jul-2016/M0P0R2', d)};
 sheets = [1];
 lr = 0;
 
@@ -21,20 +21,21 @@ minf = intmax;
 maxf = 0;
 LR = {' L', ' R'};
 
-dir = sprintf('Experimental Data/%s/', d);
-for d = 1:length(filenames)
-    data{d} = xlsread(filenames{d}, sheets(d));
-    freqs{d} = data{d}(:,1);
-    add = filenames{d}(regexp(filenames{d},'/M')+1:end);
-    dir = [dir add];
-    if d ~= length(filenames)
-        dir = [dir ' and '];
-    end
-    minf = min([minf min(freqs{d})]);
-    maxf = max([maxf max(freqs{d})]);
-end
+% dir = sprintf('Experimental Data/%s/', d);
+% for d = 1:length(filenames)
+%     data{d} = xlsread(filenames{d}, sheets(d));
+%     freqs{d} = data{d}(:,1);
+%     add = filenames{d}(regexp(filenames{d},'/M')+1:end);
+%     dir = [dir add];
+%     if d ~= length(filenames)
+%         dir = [dir ' and '];
+%     end
+%     minf = min([minf min(freqs{d})]);
+%     maxf = max([maxf max(freqs{d})]);
+% end
+% 
+% dir = [dir ' Graphs'];
 
-dir = [dir ' Graphs'];
 [s,m1, m2] = mkdir(dir);
 
 if figures(1) == 1 % figures(1) is a graph of R and T
@@ -52,7 +53,7 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     %% Uncomment the following line to preserve the X-limits of the axes
     xlim(axes1,[minf maxf]);
     %% Uncomment the following line to preserve the Y-limits of the axes
-    ylim(axes1,[-2.5 2]);
+    ylim(axes1,[0 2]);
     box(axes1,'on');
     hold(axes1,'on');
     

@@ -32,7 +32,6 @@ OSCOBJ.ByteOrder = 'littleEndian';
 % OSCOBJ.Triggerlevel=oscil.Triggerlevel;
 % Open the connection
 fopen(OSCOBJ);
-
 fprintf(OSCOBJ,':TIMEBASE:MODE MAIN');
 % Set up acquisition type and count.
 fprintf(OSCOBJ,':ACQUIRE:TYPE HRES');%was NORMAL

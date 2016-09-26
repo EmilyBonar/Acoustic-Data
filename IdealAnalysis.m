@@ -1,4 +1,4 @@
-% function mainAnalysis(filename,filename_excel,sheet, mic_status)
+% function IdealAnalysis(filename,filename_excel,sheet)
 
 %Program for Acoustic Analysis
 clear all;
@@ -6,15 +6,15 @@ clear all;
 clc;
 
 d = date;
-idealwave=sprintf('Experimental Data/%s/Ideal rshift 270', d); %must change to file that you want to load from
-filename_excel=sprintf('Experimental Data/%s/Ideal rshift.xlsx', d); %must change to file that you want to save to
-sheet = 8;
+filename=sprintf('Experimental Data/%s/Ideal4', d); %must change to file that you want to load from
+filename_excel=sprintf('Experimental Data/%s/Ideal.xlsx', d); %must change to file that you want to save to
+sheet = 4;
 correct = 0;
 
 [s,m1, m2] = mkdir(sprintf('Experimental Data/%s/', d));
 
 disp('Loading Data')
-datain = load(idealwave);
+datain = load(filename);
 datain = datain.dataout;
 
 channels=[1,3];%what channels to take from

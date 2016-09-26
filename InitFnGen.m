@@ -44,6 +44,7 @@ fprintf(GENOBJ, ['SOURce1:FREQuency ',num2str(freq)]);%set source frequency
 fprintf(GENOBJ, ['SOURce1:VOLTage ',num2str(amp)]); %set voltage of signal
 fprintf(GENOBJ, ['SOURce1:VOLTage:OFFS ',num2str(ampoff)]); %set voltotage offset
 fprintf(GENOBJ,'OUTPUT ON'); % turn on channel 1 output
+tic
 
 pause(1)
 

@@ -60,9 +60,13 @@ fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
 disp 'Acquiring signal(s)...'
 fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be concatenated with :SINGle command two lines below line to speed things up a little like this -> fprintf(oscilobj, ':SINGle;*CLS')
 
+t = toc;
+while t < 3
+    t = toc;
+end
 Start_Time = now;
 fprintf(oscilobj, ':SINGle');
-fprintf(oscilobj, ':TRIGger:HOLD 2');
+fprintf(oscilobj, ':TRIGger:FORCe');
 
 % Immediately ask scope if it is done with the acquisition via the Operation Status Condition (not Event) Register.
 Status = str2num(query(oscilobj, ':OPERegister:CONDition?')); 
@@ -82,7 +86,6 @@ else % Acquisition failed for some reason
     disp 'This can happen if there was not enough time to arm the scope, there was no trigger event, or the scope did not finish acquiring.'
     disp 'Visually check the scope for a trigger, adjust settings accordingly.'
     
-    fprintf(oscilobj, ':TRIGger:FORCe');
 %     clrdevice(oscilobj); % Clear scope communications interface
 %     fprintf(oscilobj, ':STOP') % Stop the scope
 %     fclose(oscilobj); % Close communications interface to scope
@@ -157,6 +160,7 @@ end
 clear waveform
 
 %% Properly close scope
+
 clrdevice(oscilobj); % Clear scope communications interface
 fclose(oscilobj); % Close communications interface to scope
 delete(oscilobj); 

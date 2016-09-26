@@ -6,7 +6,7 @@
 
 clear all
 %close all
-%clc
+clc
 
 %% -- Microphone calibration --
 c1=0.00639114;
@@ -64,8 +64,8 @@ disp(['calculating amplitudes and phases from time signals...'])
 for n=1:length(f) %like or freq in freqrange forloop
     for m=1:4 %probs each mic
 
-        nta=fix(.3*(Nc(n+1)));
-        ntb=fix(.8*(Nc(n+1)));
+        nta=fix(Nc(n)+.3*(Nc(n+1)-Nc(n)));
+        ntb=fix(Nc(n)+.8*(Nc(n+1)-Nc(n)));
         
         X = (data(nta:ntb,m)' * data(nta:ntb,5))/length(nta:ntb);
         Y = (data(nta:ntb,m)' * data(nta:ntb,6))/length(nta:ntb);

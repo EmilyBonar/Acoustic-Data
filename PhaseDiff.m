@@ -1,7 +1,7 @@
 function PhaseDiff
 
 d = date;
-filename = sprintf('Experimental Data/%s/Mics facing cone', d);
+filename = sprintf('Experimental Data/%s/Ideal1', d);
 
 datain1 = load(filename);
 datain1 = datain1.dataout;
@@ -14,9 +14,7 @@ for x = 1:fcount(1)
     time = datain1{x,2};
     volts = datain1{x,3};
     v = volts(:,1:2);
-    size(v)
-    size(time)
-    plot(time(:,1:2),v)
+    plot(time,v)
     
     w = 347/freq(x);
     percent = .0254/w;
@@ -32,8 +30,14 @@ for x = 1:fcount(1)
 %     threshold = min(max(abs(pressures))/10000);
 %     pressures(abs(pDummy)<threshold) = 0;
 
-    m(x,1) = abs(m(x,1))*exp(1i*(angle(m(x,1))-rad));
+    m(x,2) = abs(m(x,2))*exp(1i*(angle(m(x,2))-rad));
 end
+
+x1 = 0;
+x2 = x1+.0254;
+x3 = x2+.2667;
+x4 = x3+.0254;
+e = x4 + .3048;
 
 amp1 = abs(m(:,1));
 a1 = mean(amp1);
