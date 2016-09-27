@@ -1,4 +1,4 @@
-function [dataout] = InitFnGen(fngen,freq,amp,ampoff,wave,channels,readpoints)
+function [dataout] = InitFnGen(fngen,freq,amp,ampoff,wave,channels,readpoints,trig)
 %Called from driverfngen, sets up the function generator, turns on signal,
 %and then proceeds to call driveroscil to take data
 newobjs = instrfind;
@@ -44,10 +44,11 @@ fprintf(GENOBJ, ['SOURce1:FREQuency ',num2str(freq)]);%set source frequency
 fprintf(GENOBJ, ['SOURce1:VOLTage ',num2str(amp)]); %set voltage of signal
 fprintf(GENOBJ, ['SOURce1:VOLTage:OFFS ',num2str(ampoff)]); %set voltotage offset
 fprintf(GENOBJ,'OUTPUT ON'); % turn on channel 1 output
+tic
 
 pause(1)
 
-[dataout]=driveroscil(channels,readpoints, freq);%calls driveroscil to collect data
+[dataout]=driveroscil(channels,readpoints, freq,trig);%calls driveroscil to collect data
 
 display('Function Generator Finished')
 end

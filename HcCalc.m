@@ -43,4 +43,3 @@ for x = mic_status(1):mic_status(end)
 end
 
 end
-

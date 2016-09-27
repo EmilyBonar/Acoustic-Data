@@ -1,4 +1,4 @@
-function [OSCOBJ, errtest] = InitOscil(oscil)
+function [OSCOBJ, errtest] = InitOscil(oscil,trig)
 %called by driveroscil to set up the oscilloscope to prepare for data
 %collection
 display('Initializing Oscilloscope')
@@ -32,14 +32,13 @@ OSCOBJ.ByteOrder = 'littleEndian';
 % OSCOBJ.Triggerlevel=oscil.Triggerlevel;
 % Open the connection
 fopen(OSCOBJ);
-
 fprintf(OSCOBJ,':TIMEBASE:MODE MAIN');
 % Set up acquisition type and count.
-fprintf(OSCOBJ,':ACQUIRE:TYPE NORMAL');%was NORMAL
+fprintf(OSCOBJ,':ACQUIRE:TYPE HRES');%was NORMAL
 fprintf(OSCOBJ,':ACQUIRE:COUNT 2');
 % fprintf(OSCOBJ, 'TriggerMode normal');
 % fprintf(OSCOBJ, 'Triggerlevel 1');
-%fprintf(OSCOBJ, ':TRIGGER:EDGE:SLOPE POSITIVE');
+fprintf(OSCOBJ, sprintf(':TRIGGER:SOURCE %i',trig));
 % fprintf(OSCOBJ,'*IDN?');
 % oscil.TriggerMode = 'normal';
 % oscil.Triggerlevel = 0.5;

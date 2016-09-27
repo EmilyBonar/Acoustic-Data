@@ -1,12 +1,12 @@
-function createfigure
+function createfigure(filenames,dir)
 
 d = date;
 
-filenames = {sprintf('Experimental Data/%s/M1P0R1', d)};
+%filenames = {sprintf('Experimental Data/21-Jul-2016/M0P0R2', d)};
 sheets = [1];
 lr = 0;
 
-figures = [1 1 1];
+figures = [1 0 0];
 
 % figures(1) is a graph of R and T
 % figures(2) is a graph of PiPi*, PrPr*, and PtPt*
@@ -21,20 +21,21 @@ minf = intmax;
 maxf = 0;
 LR = {' L', ' R'};
 
-dir = sprintf('Experimental Data/%s/', d);
-for d = 1:length(filenames)
-    data{d} = xlsread(filenames{d}, sheets(d));
-    freqs{d} = data{d}(:,1);
-    add = filenames{d}(regexp(filenames{d},'/M')+1:end);
-    dir = [dir add];
-    if d ~= length(filenames)
-        dir = [dir ' and '];
-    end
-    minf = min([minf min(freqs{d})]);
-    maxf = max([maxf max(freqs{d})]);
-end
+% dir = sprintf('Experimental Data/%s/', d);
+% for d = 1:length(filenames)
+%     data{d} = xlsread(filenames{d}, sheets(d));
+%     freqs{d} = data{d}(:,1);
+%     add = filenames{d}(regexp(filenames{d},'/M')+1:end);
+%     dir = [dir add];
+%     if d ~= length(filenames)
+%         dir = [dir ' and '];
+%     end
+%     minf = min([minf min(freqs{d})]);
+%     maxf = max([maxf max(freqs{d})]);
+% end
+% 
+% dir = [dir ' Graphs'];
 
-dir = [dir ' Graphs'];
 [s,m1, m2] = mkdir(dir);
 
 if figures(1) == 1 % figures(1) is a graph of R and T
@@ -43,8 +44,8 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     set(figure1, 'Position', [600 250 1000 700])
     
     for d = 1:length(filenames)
-        R{d} = data{d}(:,9);
-        T{d} = data{d}(:,20);
+        R{d} = data{d}(:,8);
+        T{d} = data{d}(:,9);
     end
 
     % Create axes
@@ -52,7 +53,7 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     %% Uncomment the following line to preserve the X-limits of the axes
     xlim(axes1,[minf maxf]);
     %% Uncomment the following line to preserve the Y-limits of the axes
-    ylim(axes1,[0 1]);
+    ylim(axes1,[0 2]);
     box(axes1,'on');
     hold(axes1,'on');
     
@@ -75,7 +76,7 @@ if figures(1) == 1 % figures(1) is a graph of R and T
     xlabel('Frequency (Hz)');
 
     % Create ylabel
-    ylabel('Normalized PP*');
+    ylabel('Normalized');
     
     title('Reflectance vs Transmittance');
 

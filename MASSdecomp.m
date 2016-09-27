@@ -1,4 +1,4 @@
-function [dataout, PiPiC] = decomp(data, freq, correct)
+function [dataout, PiPiC] = MASSdecomp(data, freq, correct)
 
 N=length(data);
 P1 = data(1:floor(N/2)+1,1)./N;
@@ -47,8 +47,26 @@ T12 = H2111 .* (exp(j*k*x11) + R1.*exp(-j*k*x11)) ./ (exp(j*k*x21) + 1./R2.*exp(
 t = T12.*(1-R1./R2)./(1-(T12./R2).^2);
 r = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
 
-T = abs(t).^2
-R = abs(r).^2
+T = abs(t).^2;
+R = abs(r).^2;
+
+S11 = P1.*conj(P1);
+S12 = P2.*conj(P1);
+S21 = P1.*conj(P2);
+S22 = P2.*conj(P2);
+
+H12 = S12./S11;
+H12 = H12./Hc;
+
+HI = exp(-i*k*s);
+HR = exp(i*k*s);
+
+PrPrC = (1./H12+conj(H12)-conj(H12)./H12.*HI-HR)./(((HR-HI).*conj((HR-HI)))./S12);
+PiPiC = (1./H12+conj(H12)-conj(H12)./H12.*HR-HI)./(((HR-HI).*conj((HR-HI)))./S12);
+PtPtC = P3.*conj(P3);
+
+R = PrPrC./PiPiC;
+T = PtPtC./PiPiC;
 
 dataout = [freq, real(H121),imag(H121),real(H221),imag(H221), real(H2111),imag(H2111), R, T];
 end

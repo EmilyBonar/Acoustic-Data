@@ -52,10 +52,18 @@ ACQ_NOT_DONE = 8; %  This is the 4th bit of the Operation Status Condition (and 
     % This is either High (running = 8) or low (stopped and therefore done with acquisition = 0).
 
 %% Acquire
+fprintf(oscilobj,':WAVeform:POINts:MODE RAW')
+fprintf(oscilobj,':WAVeform:UNSigned 0');
+fprintf(oscilobj,':WAVEFORM:FORMAT WORD');
+fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
 
 disp 'Acquiring signal(s)...'
 fprintf(oscilobj, '*CLS'); % Clear all registers; sets them to 0; This could be concatenated with :SINGle command two lines below line to speed things up a little like this -> fprintf(oscilobj, ':SINGle;*CLS')
 
+t = toc;
+while t < 3
+    t = toc;
+end
 Start_Time = now;
 fprintf(oscilobj, ':SINGle');
 fprintf(oscilobj, ':TRIGger:FORCe');
@@ -78,26 +86,20 @@ else % Acquisition failed for some reason
     disp 'This can happen if there was not enough time to arm the scope, there was no trigger event, or the scope did not finish acquiring.'
     disp 'Visually check the scope for a trigger, adjust settings accordingly.'
     
-    clrdevice(oscilobj); % Clear scope communications interface
-    fprintf(oscilobj, ':STOP') % Stop the scope
-    fclose(oscilobj); % Close communications interface to scope
-    delete(oscilobj); 
-    clear oscilobj; 
-    Synch_Err = MException('myscript:error','Properly closing scope connection and exiting script.');
-    throw(Synch_Err)
+%     clrdevice(oscilobj); % Clear scope communications interface
+%     fprintf(oscilobj, ':STOP') % Stop the scope
+%     fclose(oscilobj); % Close communications interface to scope
+%     delete(oscilobj); 
+%     clear oscilobj; 
+%     Synch_Err = MException('myscript:error','Properly closing scope connection and exiting script.');
+%     throw(Synch_Err)
 end
-
-fprintf(oscilobj,':WAVeform:POINts:MODE Normal')
-fprintf(oscilobj,':WAVeform:UNSigned 0');
-fprintf(oscilobj,':WAVEFORM:FORMAT WORD');
-fprintf(oscilobj,':WAVEFORM:BYTEORDER LSBFirst');
 
 %% Preamble
 % Maximum value storable in a INT16
 
-
 disp('Acquiring Preamble')
-pause(.1)
+query(oscilobj, '*OPC?');
 %  split the preambleBlock into individual pieces of info
 preambleBlock = query(oscilobj,':WAVEFORM:PREAMBLE?');
 preambleBlock = regexp(preambleBlock,',','split');
@@ -158,6 +160,7 @@ end
 clear waveform
 
 %% Properly close scope
+
 clrdevice(oscilobj); % Clear scope communications interface
 fclose(oscilobj); % Close communications interface to scope
 delete(oscilobj); 
