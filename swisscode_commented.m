@@ -25,10 +25,10 @@ m3 = 5.6280;
 m4 = 5.6200;
 
 % -- Distances --
-x12 = 0.0;
-x11 = x12+.0254;
-x21 = x11+10.5*.0254;
-x22 = x21+.0254;
+x1 = 0.0;
+x2 = x1+.0254;
+x3 = x2+10.5*.0254;
+x4 = x3+.0254;
 
 %% -- Initialiyze DAQ --
 s = daq.createSession('ni');
@@ -139,19 +139,16 @@ end
 
 uPh = unwrap(Ph);
 for n=1:length(f);
-    mPh(n,1)=2*pi*x12*f(n)/c; %used only as 0 ref
-    mPh(n,2)=2*pi*x11*f(n)/c; %phase in rad off the signal should be from ref
-    mPh(n,3)=2*pi*x22*f(n)/c;
-    mPh(n,4)=2*pi*x21*f(n)/c;
+    mPh(n,1)=2*pi*x1*f(n)/c; %used only as 0 ref
+    mPh(n,2)=2*pi*x2*f(n)/c; %phase in rad off the signal should be from ref
+    mPh(n,3)=2*pi*x3*f(n)/c;
+    mPh(n,4)=2*pi*x4*f(n)/c;
     
-    
-    phaseoff(n,1) = (Ph(n,1) - Ph(n,1)) - (mPh(n,1) - mPh(n,1));
-    phaseoff(n,2) = (Ph(n,2) - Ph(n,1)) - (mPh(n,2) - mPh(n,1));
-    phaseoff(n,3) = (Ph(n,3) - Ph(n,1)) - (mPh(n,3) - mPh(n,1));
-    phaseoff(n,4) = (Ph(n,4) - Ph(n,1)) - (mPh(n,4) - mPh(n,1));
+    phaseoff(n,1) = (uPh(n,1) - uPh(n,1)) - (mPh(n,1) - mPh(n,1));
+    phaseoff(n,2) = (uPh(n,2) - uPh(n,1)) - (mPh(n,2) - mPh(n,1));
+    phaseoff(n,3) = (uPh(n,3) - uPh(n,1)) - (mPh(n,3) - mPh(n,1));
+    phaseoff(n,4) = (uPh(n,4) - uPh(n,1)) - (mPh(n,4) - mPh(n,1));
 
-
-    
 %     phaseoff(n,1) = (uPh(n,1) 
 %     phaseoff(n,1) = phaseoff(n,1) - uPh(n,1)) 
 %     phaseoff(n,1) = phaseoff(n,1) - (mPh(n,1) - mPh(n,1))
@@ -201,15 +198,15 @@ c0=344;
 k=2*pi*f'/c0;
 
 % -- Distances --
-x12 = 0.0;
-x11 = x12+.0254;
-x21 = x11+10.5*.0254;
-x22 = x21+.0254;
+x1 = 0.0;
+x2 = x1+.0254;
+x3 = x2+10.5*.0254;
+x4 = x3+.0254;
 
 % -- Reflection and transmission coefficients -- 
-R1 = (H121.*exp(j*k*x11) - exp(j*k*x12)) ./ (exp(-j*k*x12) - H121.*exp(-j*k*x11));
-R2 = (H221.*exp(-j*k*x21) - exp(-j*k*x22)) ./ (exp(j*k*x22) - H221.*exp(j*k*x21));
-T12 = H2111 .* (exp(j*k*x11) + R1.*exp(-j*k*x11)) ./ (exp(j*k*x21) + 1./R2.*exp(-j*k*x21));
+R1 = (H121.*exp(j*k*x2) - exp(j*k*x1)) ./ (exp(-j*k*x1) - H121.*exp(-j*k*x2));
+R2 = (H221.*exp(-j*k*x3) - exp(-j*k*x4)) ./ (exp(j*k*x4) - H221.*exp(j*k*x3));
+T12 = H2111 .* (exp(j*k*x2) + R1.*exp(-j*k*x2)) ./ (exp(j*k*x3) + 1./R2.*exp(-j*k*x3));
 
 T = T12.*(1-R1./R2)./(1-(T12./R2).^2);
 R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
@@ -225,7 +222,6 @@ R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
 % P2 = max(P2)
 % P3 = max(P3);
 % P4 = max(P4);
-% 
 % 
 % H121 = P1/P2
 % H221 = P4/P3;
@@ -270,11 +266,7 @@ R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
 % R = PrPrC./PiPiC;
 % T = PtPtC./PiPiC;
 % 
-% 
-% 
 
-% disp(['still computing...'])
-% pause(5)
 disp(['done!'])
 figure
 hold on
