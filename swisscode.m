@@ -160,15 +160,15 @@ legend('1','2','3','4')
 %% -- Computing tramsmissionn and reflection coeffients --
 % disp(['computing tramsmissionn and reflection coeffients...'])
 
-p12=Am(:,1)/c1/m1*m1.*exp(j*Ph(:,1));
-p11=Am(:,2)/c2/m2*m1.*exp(j*Ph(:,2));
-p21=Am(:,3)/c3/m3*m1.*exp(j*Ph(:,3));
-p22=Am(:,4)/c4/m4*m1.*exp(j*Ph(:,4));
+p1=Am(:,1)/c1/m1*m1.*exp(1i*Ph(:,1));
+p2=Am(:,2)/c2/m2*m1.*exp(1i*Ph(:,2));
+p3=Am(:,3)/c3/m3*m1.*exp(1i*Ph(:,3));
+p4=Am(:,4)/c4/m4*m1.*exp(1i*Ph(:,4));
 
 % -- Transfer functions --
-H121=p12./p11;
-H221=p22./p21;
-H2111=p21./p11;
+H12=p1./p2;
+H43=p4./p3;
+H32=p3./p2;
 
 % -- sound speed --
 c0=344;
@@ -177,9 +177,9 @@ c0=344;
 k=2*pi*f'/c0;
 
 % -- Reflection and transmission coefficients -- 
-R1 = (H121.*exp(j*k*x2) - exp(j*k*x1)) ./ (exp(-j*k*x1) - H121.*exp(-j*k*x2));
-R2 = (H221.*exp(-j*k*x3) - exp(-j*k*x4)) ./ (exp(j*k*x4) - H221.*exp(j*k*x3));
-T12 = H2111 .* (exp(j*k*x2) + R1.*exp(-j*k*x2)) ./ (exp(j*k*x3) + 1./R2.*exp(-j*k*x3));
+R1 = (H12.*exp(1i*k*x2) - exp(1i*k*x1)) ./ (exp(-1i*k*x1) - H12.*exp(-1i*k*x2));
+R2 = (H43.*exp(-1i*k*x3) - exp(-1i*k*x4)) ./ (exp(1i*k*x4) - H43.*exp(1i*k*x3));
+T12 = H32 .* (exp(1i*k*x2) + R1.*exp(-1i*k*x2)) ./ (exp(1i*k*x3) + 1./R2.*exp(-1i*k*x3));
 
 T = T12.*(1-R1./R2)./(1-(T12./R2).^2);
 R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
