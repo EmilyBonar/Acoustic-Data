@@ -132,8 +132,8 @@ for n=1:length(f) %like or freq in freqrange forloop
         
         X = (data(nta:ntb,m)' * data(nta:ntb,5))/length(nta:ntb);
         Y = (data(nta:ntb,m)' * data(nta:ntb,6))/length(nta:ntb);
-        Am(n,m) = 2*sqrt(X^2 + Y^2)
-        Ph(n,m) = atan2(Y,X)
+        Am(n,m) = 2*sqrt(X^2 + Y^2);
+        Ph(n,m) = atan2(Y,X);
     end
 end
 
@@ -145,10 +145,12 @@ for n=1:length(f);
     mPh(n,4)=2*pi*x21*f(n)/c;
     
     
-    phaseoff(n,1) = (uPh(n,1) - uPh(n,1)) - (mPh(n,1) - mPh(n,1));
-    phaseoff(n,2) = (uPh(n,2) - uPh(n,1)) - (mPh(n,2) - mPh(n,1));
-    phaseoff(n,3) = (uPh(n,3) - uPh(n,1)) - (mPh(n,3) - mPh(n,1));
-    phaseoff(n,4) = (uPh(n,4) - uPh(n,1)) - (mPh(n,4) - mPh(n,1));
+    phaseoff(n,1) = (Ph(n,1) - Ph(n,1)) - (mPh(n,1) - mPh(n,1));
+    phaseoff(n,2) = (Ph(n,2) - Ph(n,1)) - (mPh(n,2) - mPh(n,1));
+    phaseoff(n,3) = (Ph(n,3) - Ph(n,1)) - (mPh(n,3) - mPh(n,1));
+    phaseoff(n,4) = (Ph(n,4) - Ph(n,1)) - (mPh(n,4) - mPh(n,1));
+
+
     
 %     phaseoff(n,1) = (uPh(n,1) 
 %     phaseoff(n,1) = phaseoff(n,1) - uPh(n,1)) 
@@ -165,13 +167,14 @@ end
 % size(mph)
 
 %phaseoff=unwrap(Ph)-mph %how much each mic is off at each freq in radians
-% figure
-% plot(f,uPh);
-% legend('1','2','3','4')
-% 
-% figure
-% plot(f,Am);
-% legend('1','2','3','4')
+figure
+plot(f,phaseoff);
+legend('1','2','3','4')
+pause(1)
+
+figure
+plot(f,Am);
+legend('1','2','3','4')
 
 %% -- Computing tramsmissionn and reflection coeffients --
 % disp(['computing tramsmissionn and reflection coeffients...'])
@@ -213,62 +216,62 @@ R = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
 
 
 % % -- Mass Altenrante Reflection and transmission coefficients --
-N=length(data);
-P1 = data(1:floor(N/2)+1,1)./N;
-P2 = data(1:floor(N/2)+1,2)./N;
-P3 = data(1:floor(N/2)+1,3)./N;
-P4 = data(1:floor(N/2)+1,4)./N;
-P1 = max(P1)
-P2 = max(P2)
-P3 = max(P3);
-P4 = max(P4);
-
-
-H121 = P1/P2
-H221 = P4/P3;
-H2111 = P3/P2;
-
-R1 = (H121.*exp(j*k*x11) - exp(j*k*x12)) ./ (exp(-j*k*x12) - H121.*exp(-j*k*x11));
-R2 = (H221.*exp(-j*k*x21) - exp(-j*k*x22)) ./ (exp(j*k*x22) - H221.*exp(j*k*x21));
-T12 = H2111 .* (exp(j*k*x11) + R1.*exp(-j*k*x11)) ./ (exp(j*k*x21) + 1./R2.*exp(-j*k*x21));
-
-t = T12.*(1-R1./R2)./(1-(T12./R2).^2);
-r = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
-
-T = abs(t).^2;
-R = abs(r).^2;
-
-disp(['done!'])
-figure
-hold on
-plot(f, abs(T).^2)                  %transmission
-plot(f, abs(R).^2,'r')              %reflection
-plot(f, abs(R).^2+abs(T).^2,'g')    %absorbtion
-grid on
-ylim([-.5 1.5])
-legend('T','R','R+T')
-
-
-S11 = P1.*conj(P1);
-S12 = P2.*conj(P1);
-S21 = P1.*conj(P2);
-S22 = P2.*conj(P2);
-
-H12 = S12./S11;
-%H12 = H12./Hc;
-
-HI = exp(-i*k*s);
-HR = exp(i*k*s);
-
-PrPrC = (1./H12+conj(H12)-conj(H12)./H12.*HI-HR)./(((HR-HI).*conj((HR-HI)))./S12);
-PiPiC = (1./H12+conj(H12)-conj(H12)./H12.*HR-HI)./(((HR-HI).*conj((HR-HI)))./S12);
-PtPtC = P3.*conj(P3);
-
-R = PrPrC./PiPiC;
-T = PtPtC./PiPiC;
-
-
-
+% N=length(data);
+% P1 = data(1:floor(N/2)+1,1)./N;
+% P2 = data(1:floor(N/2)+1,2)./N;
+% P3 = data(1:floor(N/2)+1,3)./N;
+% P4 = data(1:floor(N/2)+1,4)./N;
+% P1 = max(P1)
+% P2 = max(P2)
+% P3 = max(P3);
+% P4 = max(P4);
+% 
+% 
+% H121 = P1/P2
+% H221 = P4/P3;
+% H2111 = P3/P2;
+% 
+% R1 = (H121.*exp(j*k*x11) - exp(j*k*x12)) ./ (exp(-j*k*x12) - H121.*exp(-j*k*x11));
+% R2 = (H221.*exp(-j*k*x21) - exp(-j*k*x22)) ./ (exp(j*k*x22) - H221.*exp(j*k*x21));
+% T12 = H2111 .* (exp(j*k*x11) + R1.*exp(-j*k*x11)) ./ (exp(j*k*x21) + 1./R2.*exp(-j*k*x21));
+% 
+% t = T12.*(1-R1./R2)./(1-(T12./R2).^2);
+% r = (R1 - T12.^2./R2)./(1-(T12./R2).^2);
+% 
+% T = abs(t).^2;
+% R = abs(r).^2;
+% 
+% disp(['done!'])
+% figure
+% hold on
+% plot(f, abs(T).^2)                  %transmission
+% plot(f, abs(R).^2,'r')              %reflection
+% plot(f, abs(R).^2+abs(T).^2,'g')    %absorbtion
+% grid on
+% ylim([-.5 1.5])
+% legend('T','R','R+T')
+% 
+% 
+% S11 = P1.*conj(P1);
+% S12 = P2.*conj(P1);
+% S21 = P1.*conj(P2);
+% S22 = P2.*conj(P2);
+% 
+% H12 = S12./S11;
+% %H12 = H12./Hc;
+% 
+% HI = exp(-i*k*s);
+% HR = exp(i*k*s);
+% 
+% PrPrC = (1./H12+conj(H12)-conj(H12)./H12.*HI-HR)./(((HR-HI).*conj((HR-HI)))./S12);
+% PiPiC = (1./H12+conj(H12)-conj(H12)./H12.*HR-HI)./(((HR-HI).*conj((HR-HI)))./S12);
+% PtPtC = P3.*conj(P3);
+% 
+% R = PrPrC./PiPiC;
+% T = PtPtC./PiPiC;
+% 
+% 
+% 
 
 % disp(['still computing...'])
 % pause(5)
