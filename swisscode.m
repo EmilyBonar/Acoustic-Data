@@ -38,13 +38,10 @@ Ts=1/Fs; %time between samples, (100k)^-1 sec/sample
 f=[1500:10:2500]; % frequencies to evaluate
 delay = 2; %number of frequencies to chop off the front
 NT=200; % number of periods per frequency point
-A=.3; %amplitude in V
-c=344;
+A=1; %amplitude in V
+c=344; %speed of sound in m/s
 
 %% -- Adding output and input channels --
-
-%warning off
-
 % -- Outputs -- 
 addAnalogOutputChannel(s,'cDAQ1Mod1',0,'Voltage'); % cos ouput Blue housing module is output waves
 addAnalogOutputChannel(s,'cDAQ1Mod1',1,'Voltage'); % sin output
@@ -56,14 +53,6 @@ ch3 = addAnalogInputChannel(s,'cDAQ1Mod2',2,'Voltage'); % mic 3
 ch4 = addAnalogInputChannel(s,'cDAQ1Mod2',3,'Voltage'); % mic 4
 ch5 = addAnalogInputChannel(s,'cDAQ1Mod2',4,'Voltage'); % cos input
 ch6 = addAnalogInputChannel(s,'cDAQ1Mod2',5,'Voltage'); % sin input
-% ch1.Range = [-5,5];
-% ch2.Range = [-5,5];
-% ch3.Range = [-5,5];
-% ch4.Range = [-5,5];
-% ch5.Range = [-5,5];
-% ch6.Range = [-5,5];
-
-%warning on
 
 disp(['generating output singal...'])
 t=0:Ts:Ts*(fix(Fs/4)-1); % this is the time vector initial waiting time = 0.25 seconds 
@@ -79,7 +68,7 @@ end
 
 %% -- Perform Frequency sweep -- 
 disp(['performing frequency sweep...'])
-queueOutputData(s,[outputSignalcos' outputSignalsin']);
+queueOutputData(s,[outputSignalcos' outputSignalsin'])
 data=s.startForeground; %starts collecting data
 
 % -- Remove offset --
@@ -87,19 +76,27 @@ for n=1:4
     data(:,n)=(data(:,n)-mean(data(:,n))); %centers voltage data around zero
 end
 
+%First entry is sometimes unusually high. This section removes it so that
+%cutting out the blank space works as designed.
+data(1,:) = [];
+t(1)=[];
+t=t-t(1);
+outputSignalcos(1)=[];
+
 % -- Set t=0 --
-n0=find(data(:,5)>.1,1,'first'); %find first value in column 5 of data >.1
+n0=find(data(:,5)>.25*A,1,'first'); %find first value in column 5 of data >.1
 %perhaps defines the first value of t by looking for a suitable amplitude to be set as the reference point for
 %all waves
 t(1:n0-1)=[];
 t=t-t(1); %deletes first all other points in t besides initial ref point then shifts t0 and all other t's to start at 0
 data(1:n0-1,:)=[]; %clears all the voltage data to align with t0
 
-n0b=find(outputSignalcos>.1,1,'first'); %sets the ref signal to start at .1 too
+n0b=find(outputSignalcos>.25*A,1,'first'); %sets the ref signal to start at .1 too
 outputSignalcos(1:n0b-1)=[]; %seems to be unused
 
-%  figure()
-%  plot(data(:,1:4)) %blue is mic 1
+figure()
+plot(data(:,5:6)) %blue is mic 1
+data(1,:)
 
 % -- Beginning and end of each frequency step --
 Nn=NT./f*Fs; %number of samples for each frequency
@@ -123,31 +120,21 @@ clear n Nn %sums up all the elements of Nn [1 1+1 1+2+3...] then adds a 0 to the
 
 disp(['calculating amplitudes and phases from time signals...'])
 for n=1:length(f) %like or freq in freqrange forloop
-    
-%     figure
-%     hold on
-    
     nta=fix(Nc(n)+.3*(Nc(n+1)-Nc(n)));%nta starting point (sample) for frequency f
     ntb=fix(Nc(n)+.8*(Nc(n+1)-Nc(n))); %end point for frequency f
     for m=1:4 %probs each mic
-
-%         plot(data(nta:ntb,m))
-       
         X = (data(nta:ntb,m)' * data(nta:ntb,5))/length(nta:ntb);
         Y = (data(nta:ntb,m)' * data(nta:ntb,6))/length(nta:ntb);
         Am(n,m) = 2*sqrt(X^2 + Y^2);
         Ph(n,m) = atan2(Y,X);
     end
-%     plot(data(nta:ntb,5))
-%     plot(data(nta:ntb,6))
     uPh = unwrap(Ph);
-
-%     hold off
 end
+FFT= fft(data(1:end,1));
+length(FFT)
+ plot(abs(FFT/length(data(:,1))))
 
-ft= fft(data(:,1));
-% plot(ft,size(data,1))
-
+%% -- Section for Phase Offset stuff (not important) --
 for n=1:length(f);
     mPh(n,1)=2*pi*x1*f(n)/c; %used only as 0 ref
     mPh(n,2)=2*pi*x2*f(n)/c; %phase in rad off the signal should be from ref
