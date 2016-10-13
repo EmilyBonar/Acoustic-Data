@@ -60,10 +60,11 @@ f = [f(1)-(f(2)-f(1))*delay:(f(2)-f(1)):f(1)-(f(2)-f(1)) f];
 outputSignalcos=t*0;
 outputSignalsin=t*0;
 for nf=1:length(f) %like for loop going through each freq in freqrange
-    tn=0:Ts:(NT/f(nf)); %time vector. NT/f(nf) is the amount of time that NF (200) periods takes
+    tn=0:Ts:(NT/f(nf)); %time vector. NT/f(nf) is the amount of time that NF (200.5) periods takes
     outputSignalcos = [outputSignalcos A*cos(2*pi*f(nf)*tn)]; %signals sent into tube
     outputSignalsin = [outputSignalsin A*sin(2*pi*f(nf)*tn)];
     t=[t tn+t(end)];
+%     plot(outputSignalcos)
 end
 
 %% -- Perform Frequency sweep -- 
@@ -72,9 +73,9 @@ queueOutputData(s,[outputSignalcos' outputSignalsin'])
 data=s.startForeground; %starts collecting data
 
 % -- Remove offset --
-for n=1:4
-    data(:,n)=(data(:,n)-mean(data(:,n))); %centers voltage data around zero
-end
+% for n=1:4
+%     data(:,n)=(data(:,n)-mean(data(:,n))); %centers voltage data around zero
+% end
 
 %First entry is sometimes unusually high. This section removes it so that
 %cutting out the blank space works as designed.
@@ -94,9 +95,11 @@ data(1:n0-1,:)=[]; %clears all the voltage data to align with t0
 n0b=find(outputSignalcos>.25*A,1,'first'); %sets the ref signal to start at .1 too
 outputSignalcos(1:n0b-1)=[]; %seems to be unused
 
-figure()
-plot(data(:,5:6)) %blue is mic 1
-data(1,:)
+% figure()
+% % plot(data(:,5:6)) %blue is mic 1
+% data(1,:)
+
+plot(data(:,1:4))
 
 % -- Beginning and end of each frequency step --
 Nn=NT./f*Fs; %number of samples for each frequency
@@ -122,7 +125,12 @@ disp(['calculating amplitudes and phases from time signals...'])
 for n=1:length(f) %like or freq in freqrange forloop
     nta=fix(Nc(n)+.3*(Nc(n+1)-Nc(n)));%nta starting point (sample) for frequency f
     ntb=fix(Nc(n)+.8*(Nc(n+1)-Nc(n))); %end point for frequency f
-    for m=1:4 %probs each mic
+    
+%     for m=1:4
+%         data(nta:ntb,m)=(data(nta:ntb,m)-mean(data(nta:ntb,m))); %centers voltage data around zero
+%     end
+    
+    for m=1:4 % each mic
         X = (data(nta:ntb,m)' * data(nta:ntb,5))/length(nta:ntb);
         Y = (data(nta:ntb,m)' * data(nta:ntb,6))/length(nta:ntb);
         Am(n,m) = 2*sqrt(X^2 + Y^2);
@@ -130,13 +138,13 @@ for n=1:length(f) %like or freq in freqrange forloop
     end
     uPh = unwrap(Ph);
 end
+plot(data(:,1:4))
 FFT= fft(data(1:end,1));
-length(FFT)
- plot(abs(FFT/length(data(:,1))))
+%  plot(abs(FFT/length(data(:,1))))
 
 %% -- Section for Phase Offset stuff (not important) --
 for n=1:length(f);
-    mPh(n,1)=2*pi*x1*f(n)/c; %used only as 0 ref
+    mPh(n,1)=2*pi*x1*f(n)/c; %used only as 0 ref 
     mPh(n,2)=2*pi*x2*f(n)/c; %phase in rad off the signal should be from ref
     mPh(n,3)=2*pi*x3*f(n)/c;
     mPh(n,4)=2*pi*x4*f(n)/c;
@@ -148,13 +156,19 @@ for n=1:length(f);
 end
 
 %phaseoff=unwrap(Ph)-mph %how much each mic is off at each freq in radians
-figure
-plot(f,uPh);
-legend('1','2','3','4')
+% figure
+% plot(f,mPh);
+% legend('uPh1','uPh2','uPh3','uPh4')
 
 figure
-plot(f,Am);
+plot(f,uPh);
+title('Unwrapped Phase')
 legend('1','2','3','4')
+
+% figure
+% plot(f,Am);
+%title('Amplitude')
+% legend('1','2','3','4')
 
 %% -- Computing tramsmissionn and reflection coeffients --
 % disp(['computing tramsmissionn and reflection coeffients...'])
